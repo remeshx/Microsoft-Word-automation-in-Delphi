@@ -1,0 +1,745 @@
+<!-- Vignette StoryServer 4 Sun Oct 23 15:53:02 2005 -->
+ <!-- Vignette StoryServer 4 Wed Oct 26 09:28:08 2005 -->
+
+	
+   
+
+        
+   
+
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+
+<HEAD>
+
+<TITLE>Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 2</TITLE>
+
+ <META NAME="KEYWORDS" CONTENT=""> 
+ <META NAME="DESCRIPTION" CONTENT="The goal of this two-part paper is to get you up to speed automating Excel and Word from a Delphi application.">
+
+<LINK REL="stylesheet" TITLE="Default" HREF="http://bdn.borland.com/styles/defaultNew.css" TYPE="text/css">
+<LINK REL="stylesheet" TITLE="Default" HREF="http://bdn.borland.com/styles2005.css" TYPE="text/css">
+<LINK REL="stylesheet" TITLE="Default" HREF="http://bdn.borland.com/styles/bdn.css" TYPE="text/css">
+<script type="text/javascript" src="http://bdn.borland.com/javascript/library.js"></script>
+<script type="text/javascript" src="http://bdn.borland.com/javascript/hide_show.js"></script>
+<!--Site Level a -->
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+ 
+<A NAME="top"></A><!-- Vignette StoryServer 4 Wed Oct 26 09:28:09 2005 -->
+
+ <!-- Site level is a -->
+
+      
+		
+	  
+	 
+ <div id="borland-sites">
+	<ul>
+		<li class="first-site"><div><a href="http://www.borland.com/">Borland.com</a></div></li>
+
+		<li class="selected"><div><A HREF="/">Borland Developer Network</a></div></li>
+		<li><div><a href="http://support.borland.com">Borland Support Center</a></div></li>
+		<li><div><a href="http://borland.ewebsmartlink.com/">Borland University</a></div></li>
+		<li><div><a href="http://www.borland.com/ww/">Worldwide Sites</a></div></li>
+		<li class="country-label"><A HREF="https://bdn.borland.com/cgi-bin/login/"><!-- Vignette StoryServer 4 Wed May 22 12:08:43 2002 -->
+<A HREF="https://bdn.borland.com/cgi-bin/login/" CLASS="bigBlack">Login</a></A></li>
+	</ul>
+</div>
+
+
+<br style="clear:both"/>
+		<div id="logo-area"> <a href="/"><img src="/images/logo-area/bdnetwork2.gif" width="326" height="40" alt="Borland" border="0" id="logo" /></a>
+		<div id="toolbar">
+                
+                  <form name="search" method="get" action="http://www.google.com/custom"><ul>
+				 <LI><A HREF="https://bdn.borland.com/cgi-bin/login/">My Account </A></LI>  
+				  <li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li><li><a href="/info/">Help</a></li><li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li><li class="searchbox"><input type="text" name="q" size="31" maxlength="255" value="" /></li><li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li><li><a href="javascript:void document.search.submit()" class="search">Search</a></li></ul><input type="hidden" name="cof" value="S:http://bdn.borland.com;AH:left;BGC:#FFFFFF;LH:51;LC:#0000FF;L:http://bdn.borland.com/images/topnav/bdnetwork2.gif;LW:383;T:#000000;AWFID:beeeba6b5662a726;" />
+
+  <input type="hidden" name="sitesearch" value="" />
+  <input type="hidden" name="sitesearch" value="borland.com" />
+  <input type="hidden" name="domains" value="borland.com" />
+  </form>
+</div>
+
+
+</div>	
+
+
+<!-- BEGIN: Primary Navigation -->
+<div id="primary-nav"> 
+ <div id="primary-nav-top"></div>
+  <ul id="primarynav">
+    <li  ><a href="#" ><IMG SRC="/images/primary-nav/application_lifecycle.gif" BORDER="0" WIDTH="131" HEIGHT="7" TITLE="Application Lifecycle"></a>
+	   <ul>
+        <li><a href="/caliberrm" >CaliberRM</a></li> 
+        <li><a href="/together" >Together</a></li>
+ 	    <li><a href="/java" >JBuilder</a></li>
+        <li><a href="/starteam" >StarTeam</a></li> 
+       </ul>
+    </LI> 
+    <li  ><a href="#"><IMG SRC="/images/primary-nav/ide.gif" BORDER="0" WIDTH="18" HEIGHT="7" TITLE="IDE"></A>
+		<ul>
+               	<li><a href="/java" >Java</a></li>
+				<li><a href="/delphi" >Delphi</a></li>
+				<li><a href="/csharp" >C#</a></li>
+       			<li><a href="/cpp" >C++</a></li>
+      	</ul>
+    </li>
+   <li  ><a href="#" ><IMG SRC="/images/primary-nav/application_middleware.gif" BORDER="0" WIDTH="150" HEIGHT="7" TITLE="Application Middleware"></A>
+      <ul>
+        <li><a href="/appserver">AppServer</a></li>
+	    <li><a href="/corba" >VisiBroker</a></li>
+ 		<li><a href="/interbase" >InterBase</a></li>
+        <li><a href="/jdatastore" >JDataStore</a></li>
+      </ul>
+    </li>
+    <li   ><a href="#"><IMG SRC="/images/primary-nav/more_resources.gif" BORDER="0" WIDTH="101" HEIGHT="7" TITLE="More Resources: Examples, Tools, Bugs, GetPublished, Events, Museum, etc."></a> 
+      <ul>
+     	<li><a href="/bdntv" TITLE="View product demonstrations & listen to Borland's developers and management." >BDN TV &amp; Radio</a></li>
+  		<li><a href="http://blogs.borland.com" >Blogs</a></li>
+		<li><a href="/books" TITLE="Find books covering Borland products." >Books</a></li>
+		<li><a href="http://qc.borland.com" Title="Submit bugs and feature requests. Also known as QualityCentral." >Bugs &amp; Suggestions</a></li>
+		<li><a href="/chat" >Chat</a></li>
+		<li><a href="/borcon" TITLE="Browse the rich resources of Borland's Annual Developer Conference Procedings." >Conference Proceedings</a></li>	
+		<li><a href="http://ec.borland.com" Title="View Borland related events in your area and post your own." >Events</a></li>
+		<li><a href="http://cc.borland.com" Title="Examples, code, etc.. Also known as CodeCentral." >Examples</a></li>
+       	<li><a href="/getpublished" TITLE="Submit your own articles to bdn for publication and get paid." >GetPublished</a></li>
+		<li><a href="/museum" TITLE="Download antique versions of Borland software." >Museum</a></li>
+  		<li><a href="http://support.borland.com/newsgroups" >Newsgroups</a></li>
+	 <li><a href="http://news.borland.com" Title="Listings of bdn articles in XML format." >News Feeds</a></li> 
+	  <li><a href="http://shop.borland.com" Title="Purchase Borland products online." >Shop</a></li> 
+	 <li><a href="http://btp.borland.com" Title="Browse the Borland Technology Partners database." >Technology Partners</a></li>
+      </ul>
+    </li>
+ </ul>
+  
+			
+</div>
+<!-- END: Primary Navigation -->		
+	
+<div id="mast"> 
+</div><P>&nbsp;</P><P> </P>
+
+<!-- Vignette StoryServer 4 Wed Oct 26 01:21:44 2005 -->
+ 
+
+     
+
+           
+              
+          <!-- BEGIN: Page Body ContentTable starts here-->
+
+<table cellpadding="0" cellspacing="0" border="0" id="channels">
+  <tr>
+<td id="channel-spacer-sm">&nbsp;</td>
+
+
+<td id="channel-spacer">&nbsp;</td>
+
+<td class="content-channel">
+	<div id="content">
+
+
+
+
+    <!-- Vignette StoryServer 4 Wed Oct 26 09:27:55 2005 -->
+ 
+
+
+
+<SCRIPT LANGUAGE=JavaScript>
+
+  function ResourceWin(hurl) {
+wid = window.open(hurl, "ResourceWin",
+"toolbar=yes,status=no,directories=no,location=no,scrollbars=yes,width=1000,height=700,resizable=yes","true");
+}
+  
+
+</SCRIPT>
+
+
+ 
+
+	
+			  <META NAME="author" CONTENT="Charles Calvert">
+<META NAME="id" CONTENT="10127">
+<META NAME="date" CONTENT="May 05 1997 12:00:00:000AM">
+<META NAME="creationdate" CONTENT="Sep 24 1999 06:38:12:000AM">
+<META NAME="type" CONTENT="White Paper">
+<META NAME="visibility" CONTENT="Public">
+<META NAME="product" CONTENT="">
+
+<META NAME="platform" CONTENT="">
+
+<P>&nbsp;<BR>
+
+<SPAN CLASS="title3">Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 2</SPAN>
+<SPAN CLASS="contentSectionHeading">  - by  Charles Calvert</SPAN><BR>
+<BR>		
+<!-- Vignette StoryServer 4 Wed Oct 26 09:28:09 2005 -->
+     
+		    
+
+
+
+          
+	   
+	   
+	   
+	   
+	        Rating: 
+<A HREF="#rating">
+
+<!-- Vignette StoryServer 4 Wed Oct 26 03:05:17 2005 -->
+
+	 
+	 
+	 
+	 
+	 <IMG SRC="/images/icons/star_4.gif" ALT="Rating is 3.5 - 4.5" width='65'  height='12'  BORDER='0'></a>
+&nbsp; &nbsp;
+Ratings:&nbsp;12 &nbsp; &nbsp; <A HREF="#rating">Rate it</A><BR>
+
+  <!-- end of rating summary component-->
+
+<BLOCKQUOTE CLASS="abstract"><B>Abstract:</B> The goal of this two-part paper is to get you up to speed automating Excel and Word from a Delphi application.&nbsp;</BLOCKQUOTE><P>
+ 
+<TABLE BORDER='0' CELLPADDING='0' CELLSPACING='0'>
+<TR><TD VALIGN='TOP'>
+   
+<FONT SIZE="5"><B>Delphi and Microsoft Office: Automating Excel and Word</B></FONT><BR>
+<FONT SIZE="3">Copyright &copy; 1997 by Charlie Calvert</FONT><BR>
+<FONT SIZE="2">Here is the <A HREF="/article/images/10126/examples.zip">examples.zip</A> file.</FONT>
+<P>
+
+<B><U><A NAME="creating_objs">Creating Excel Automation Objects</A></U></B><BR>
+Now that you have been introduced to the topic of automating Excel, the next step is to learn something about what it means to create an OLE automation object.
+<P>
+The call to <U>CreateOleObject</U> returns a COM object called IDispatch housed inside a variant. You can pass a string to <U>CreateOleObject</U> specifying the name of the COM object you wished to retrieve. In this case, I have retrieved the main Excel Automation object, by passing in the string &quot;<U>Excel</U>.<U>Application'</U>. If you are familiar with the registry, you can find this string there, and can trace that reference to the CLSID associated with the LocalServer that returns the object. If you don't know anything about CLSIDs, or about LocalServers, I wouldn't feel too concerned. The point is simply that <U>CreateOleObject</U> returns a COM object of your choice if you pass in the correct string. In particular, it looks up your string in the registry, finds the CLSID associated with the string, looks up the CLSID, and finds the LocalServer associated with that CLSID. The local server will be string pointing at the application that contains the object you want to retrieve. For instance, in this case, on my system, the Local Server string looks like this:
+<P>
+</FONT>
+<CODE>
+<PRE>
+C:Program FilesMicrosoft OfficeOfficeexcel.exe /automation
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This string is copied directly from the REGEDIT.EXE application that ships with all copies of Windows. I found it in HKEY_CLASSES_ROOTCLSID, under the guid listed next to Excel.Application. Guids are 64 byte numbers designed to uniquely identify an object.
+<P>
+If you want to trace out the details of this operation, and if you have the source to the VCL, you can open up COMObj.pas and find the implementation of <U>CreateOleObject</U>. It consists of a simple call to <U>CoCreateInstance</U>. <U>CoCreateInstance</U> is a Windows API routine that is part of the OLE specification. Its purpose is to retrieve an object from a binary file such as an executable or DLL. 
+<P>
+The strings you pass into CreateOleObject are called ProgIDs. As you just saw, all the ProgIDs valid on your system are listed in the registry under the section HKEY_CLASSES_ROOT. (I cover this subject in more depth in the article on my web site entitled Delphi and COM.) The Delphi documentation is not the place to turn to find the ProgIDs you pass in to the various COM servers available on your system. Instead, you should turn to the documentation for the application you wish to control. For instance, Excel has extensive COM documentation in an online help file that ships with Microsoft Office called VBAXL8.HLP. (Break it down: VBA: Visual Basic for Applications, XL: Excel, 8: Version number.) If you are doing a lot of OLE Automation with Excel then you should add this file to Delphi's tools menu so you can get at it easily. For information on retrieving objects, use the Index feature in the Excel help to look up &quot;OLE programmatic identifiers&quot;. 
+<P>
+In the Excel online help, you will find that this spreadsheet application has three main objects you can retrieve using <U>CreateOleObject</U>:
+<P>
+</FONT>
+<CODE>
+<PRE>
+CreateOleObject('Excel.Application');
+CreateOleObject('Excel.Sheet');
+CreateOleObject('Excel.Chart');
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+These strings, and slight variations on these strings, are the only valid parameters to pass to <U>CreateOleObject</U> if you want to talk to Excel via COM. There are many, many more objects inside of Excel. However, these three are the only ones you can retrieve from outside of Excel using the <U>CreateOleObject</U> function. Once you have retrieved one of these objects, you can use it as your access to all the other objects in the Excel hierarchy. Getting at these objects is a bit like unwinding a ball of thread. You first need a handle to the ball of thread, which you get by calling <U>CreateOleObject</U>. Once you have a handle, you can use it to get to all the different objects inside Excel. Just keep pulling at the thread you get back from <U>CreateOleObject</U> and all the rest of the objects will come unraveled. This subject is explained in more depth in the next section.
+<P>
+<B><U><A NAME="understand_objs">Understanding  Excel Automation Objects</A></U></B><BR>
+If you are an experienced Delphi programmer, you may find OLE objects a bit confusing at first. Like standard Pascal objects, they exist inside a hierarchy, but that hierarchy, at least as it is presented to the public, is not based on inheritance. Instead, the main glue that holds the hierarchy together is the fact that you can access one particular object from another particular object.
+<P>
+For instance, the top member of the Excel hierarchy is called Application. Beneath it is the Workbooks object, and beneath that are the Worksheets and Charts objects:
+<P>
+</FONT>
+<CODE>
+<PRE>
+1) Application:
+  A) Workbooks
+    i) Worksheets
+    ii) Charts
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+If you want to get at the Workbooks object, then you can access it from the Application object:
+<P>
+</FONT>
+<CODE>
+<PRE>
+MyWorkbooks  := Application.Workbooks;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+If you want to get at the Worksheets object, then you can access it from the Workbooks object. And so on. In the code shown here, you would declare MyWorkbooks as a variant. In all cases, during this first part of the article, I am using variants to access the underlying Excel objects. Getting an actual interface to a Workbooks interface is covered in the second part of the article.
+<P>
+If you saw this hierarchy in a Delphi application, you would assume that Workbooks is a descendant of Application, and Worksheets a descendant of Workbooks. That kind of thinking is completely off center when it comes to OLE automation. The standard OOP hierarchy found in C++ and Pascal has nothing to do with OLE Automation. This is a totally different kind of hierarchy intended only to express which objects can be accessed from another object. As you will see in the second part of this paper, it may also be true that there is a valid OOP inheritance based hierarchy simultaneously implemented on this objects. However, that hierarchy is not the main one you focus on when using automation, and in fact, I think it is easiest at first to pretend that it does not exist at all.
+<P>
+If you want to talk about all the Worksheets and Charts in a Workbook, then you use the Sheets object. When thinking about the Sheets object, you could rewrite the hierarchy shown above as follows:
+<P>
+</FONT>
+<CODE>
+<PRE>
+1) Application
+  A) Workbooks
+    i) Sheets
+    ii) Worksheets
+    iii) Charts
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+The point is that this hierarchy is meant to denote the order in which you access objects, and as such it has a somewhat more slippery structure than you would fine in a typical inheritance hierarchy. In fact, it seems that you can get at most any object from any one point in the hierarchy, so the actual structure of the hierarchy is a little dependant on your current position inside it.
+<P>
+You get at the Workbooks object from Application object. You get at the Sheets, Worksheets and Charts objects from the Workbooks object:
+<P>
+</FONT>
+<CODE>
+<PRE>
+<P>MyCharts := Application.Workbooks&#91;I&#93;;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+It would be untrue to say that the Application object is synonymous with the binary file Excel.exe, but it does have some things in common with this executable. For instance, the Application object is the most abstracted, the most generalized way that you have of referring to the set of available Excel automation objects. If you open up Excel and have no documents loaded, then you are looking at a visual representation of the Application object. This is not the same thing as the Application object, but it can serve as a metaphor for what the object does. It is analogous to it. It is the highest level container for accessing all of the functionality available from Excel. However, it is so generalized that it can't do much that is useful without help from other objects. But you get at those other objects by starting with the Application object. All this is equally true of Excel.exe. If you open up Excel.exe with no documents in it, then it has little use on its own, but it is still the gateway you would use to access all these documents.
+<P>
+The WorkBooks object contains a collection of Worksheets and Charts. A Worksheet is just a standard page from a spreadsheet, while a Chart is just a graph. The Sheets object contains both Worksheets and Charts, while the Worksheets and Charts objects contain only Worksheets or Charts. Your job as an Excel automation programmer is to start learning how to make statements like these. In other words, this is the kind of logic that underlies the Excel hierarchy of objects. As an automation programmer your job is to start to figure out how to get at one object from another object, and to understand what each object does. 
+<P>
+Here is another way to think about what you, as an Excel automation programmer, are really trying to do. Most computer users understand how to use Excel. The automation objects discussed in this paper allow you to write code that manipulates Excel just as you would manipulate Excel with a mouse. You probably already know how to open a spreadsheet, enter data, perform calculations, and chart data. You goal as an automation programmer is to find out how to do the same things in code. You just need to know which object refers to which set of tools inside Excel. Figure that out, and figure out how to get at each of these objects given the existence of an Application object, and then you are ready to roll!
+<P> 
+The program shown in Listing 2 provides a summary of the major points made in this section of the paper. Glance over it once, and then read on to find an explanation of how it works.
+<P>
+<B>Listing 2: The Excel2 program shows how the objects in Excel are arranged hierarchically.</B>
+<P>
+</FONT>
+<CODE>
+<PRE>
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils,
+  Classes, Graphics, Controls,
+  Forms, Dialogs, StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    ListBox1: TListBox;
+    procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    XLApplication: Variant;
+  public
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+uses
+  ComObj;
+  
+{$R *.DFM}
+
+procedure TForm1.Button1Click(Sender: TObject);
+const
+{ XlSheetType }
+  xlChart = -4109;
+  xlDialogSheet = -4116;
+  xlExcel4IntlMacroSheet = 4;
+  xlExcel4MacroSheet = 3;
+  xlWorksheet = -4167;
+
+{ XlWBATemplate }
+  xlWBATChart = -4109;
+  xlWBATExcel4IntlMacroSheet = 4;
+  xlWBATExcel4MacroSheet = 3;
+  xlWBATWorksheet = -4167;
+var
+  i, j: Integer;
+  Sheets: Variant;
+begin
+  XLApplication := CreateOleObject('Excel.Application');
+  XLApplication.Visible := True;
+  XLApplication.Workbooks.Add;
+  XLApplication.Workbooks.Add(xlWBatChart);
+  XLApplication.Workbooks.Add(xlWBatWorkSheet);
+  XLApplication.Workbooks&#91;2&#93;.Sheets.Add(,,1,xlChart);
+  XLApplication.Workbooks&#91;3&#93;.Sheets.Add(,,1,xlWorkSheet);
+  for i := 1 to XLApplication.Workbooks.Count do begin
+    ListBox1.Items.Add('Workbook: ' + XLApplication.Workbooks&#91;i&#93;.Name);
+    for j := 1 to XLApplication.Workbooks&#91;i&#93;.Sheets.Count do
+      ListBox1.Items.Add('  Sheet: ' +  
+        XLApplication.Workbooks&#91;i&#93;.Sheets&#91;j&#93;.Name);
+  end;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  if not VarIsEmpty(XLApplication) then begin
+    XLApplication.DisplayAlerts := False;  // Discard unsaved files....
+    XLApplication.Quit;
+  end;
+end;
+
+end.
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This application starts an instance, of Excel, then populates it with three workbooks. One of the workbooks contains a default number of worksheets, a second contains a user defined number of worksheets, and a third contains some workcharts. Over the next few paragraphs I will explain how it all works.
+<P>
+Take a moment to study the core of the Button1Click method:
+<P>
+</FONT>
+<CODE>
+<PRE>
+begin
+  XLApplication := CreateOleObject('Excel.Application');
+  XLApplication.Visible := True;
+  XLApplication.Workbooks.Add;
+  XLApplication.Workbooks.Add(xlWBatChart);
+  XLApplication.Workbooks.Add(xlWBatWorkSheet);
+  XLApplication.Workbooks&#91;2&#93;.Sheets.Add(,,1,xlChart);
+  XLApplication.Workbooks&#91;3&#93;.Sheets.Add(,,1,xlWorkSheet);
+  for i := 1 to XLApplication.Workbooks.Count do begin
+    ListBox1.Items.Add('Workbook: ' + XLApplication.Workbooks&#91;i&#93;.Name);
+    for j := 1 to XLApplication.Workbooks&#91;i&#93;.Sheets.Count do
+      ListBox1.Items.Add('  Sheet: ' +  
+        XLApplication.Workbooks&#91;i&#93;.Sheets&#91;j&#93;.Name);
+  end;
+end;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+<U>XLApplication</U> is a <U>variant</U> that contains an instance of <U>IDispatch</U> used for accessing the Excel <U>Application</U> object. As you know, there is a property of <U>Application</U> called <U>Visible</U>. If you set it to <U>True</U>, then Excel will appear on your screen. Once again, this is not the time or place to get into it, but COM objects support the notion of properties. These properties are very different internally from Delphi properties, but behave more or less the same.
+<P>
+Workbooks is a collection object. It contains a collection of workbooks. This pattern is followed over and over in Excel. The <U>Sheets</U> object contains a collection of sheets. The Worksheets object contains a collection of worksheets. The <U>Charts</U> object contains a collection of charts. Inside Word, the <U>Paragraphs</U> object contains a collection of paragraphs. The <U>Words</U> object contains a collection of words. The <U>Tables</U> object contains a collection of tables. And so on. 
+<P>
+Depending on which automation server you are using, you get at member of a collection through one of four possible syntaxes. Sometimes all syntaxes are available to you, sometimes less:
+<P>
+</FONT>
+<CODE>
+<PRE>
+MyChart := Charts&#91;1&#93;;
+MyChart := Charts.Item&#91;1&#93;;
+MyChart := Charts(1);
+MyChart := Charts.Item(1);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+You need to be conscious of the difference between a collection object and a normal object. For instance, to understand a <U>Worksheets</U> object, you should look up both <U>Worksheets</U> and <U>Worksheet</U> in the Excel help, to understand the <U>Tables</U> object you should look up both <U>Tables</U> and <U>Table</U> in the Word help.
+<P>
+<U>Workbooks</U> has a method called <U>Add</U>, which you use to add a workbook to a workbooks collection. COM objects support the idea of variable parameter lists. This means you can simply skip passing in parameters to a method if you want. In this case, if you call <U>Workbooks</U>.<U>Add</U> with no parameters, then you will create a workbook with some predefined number of worksheets in it. The default number is three, but you can change the number from inside of Excel if you so desire. When you are working with interfaces rather than variants, you won't be able to omit parameters. I will explain in the second part of this paper how to work with interfaces in situations such as this one, where not passing in a parameter has a special meaning.
+<P>
+If you want to create a new <U>Workbook</U> with exactly one <U>Worksheet</U> in it, then you call <U>Add</U> and pass in the constant <U>xlWBatWorksheet.</U> I declare this constant explicitly inside this program. In the next section of this paper I will tell you how to get a complete list of all the Excel and Word constants. 
+<P>
+If you want to create a new workbook with exactly one chart in it, then you call Add and pass in the constant <U>xlWBatChart</U>.
+<P>
+If you then want to add one worksheet to the second workbook you created, you would write the following code:
+<P>
+</FONT>
+<CODE>
+<PRE>
+XLApplication.Workbooks&#91;2&#93;.Sheets.Add(,,1,xlWorkSheet);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+Here is how to create a new chart:
+<P>
+</FONT>
+<CODE>
+<PRE>
+XLApplication.Workbooks&#91;2&#93;.Sheets.Add(,,1,xlChart);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+In this case, the <U>Add</U> method of the <U>Sheets</U> object takes four parameters:
+<P>
+<OL>
+<LI><U>Before</U>:  A variant containing the sheet before which the new sheet is added. 
+<LI><U>After</U> : A variant containing the sheet after which the new sheet is added.
+<LI><U>Count</U>: The number of sheets to add, with the value defaulting to one.
+<LI><U>Type</U>: One of the following constants: <U>xlWorksheet</U>, <U>xlChart</U>, <U>xlExcel4MacroSheet</U>, or <U>xlExcel4IntlMacroSheet</U>. The default value is <U>xlWorksheet</U>.
+</OL>
+<P>
+The first two parameters specify the location in the workbook where you want the new chart or worksheet to appear. The third parameters states how many sheets you want to add, the fourth specifies the type of sheet you want to add. Here is how the method is declared in the Microsoft docs:
+<P>
+</FONT>
+<CODE>
+<PRE>
+expression.Add(Before, After, Count, Type);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+In the above examples of using <U>Add</U>, I don't care what order the sheets are inserted, so I just omit the first two parameters by simply placing commas in my code where the parameters would be listed. If wanted to state the order, I would write something like this:
+<P>
+</FONT>
+<CODE>
+<PRE>
+Sheets := Application.Sheets;
+Sheets.Add(, Sheets.Item&#91;2&#93;, 1, xlChart);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+In this case the code still leaves the <U>Before</U> parameter blank, but it references the 2 sheet in the <U>After</U> parameter.
+<P>
+The <U>for loop</U> at the bottom of the example method iterates through each of the work groups, and then finds the names of each of the sheets available in each workbook, and adds them to list box. In short, the code shows how to retrieve the names of the members of a series of Workbooks, while simultaneously showing how to iterate over all their members.
+<P>
+Here is how to reference the number of workbooks in the application:
+<P>
+</FONT>
+<CODE>
+<PRE>
+for i := 1 to XLApplication.Workbooks.Count do begin
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+And here is how to count the number of sheets in a <U>Workbook</U>:
+<P>
+</FONT>
+<CODE>
+<PRE>
+for j := 1 to XLApplication.Workbooks&#91;i&#93;.Sheets.Count do
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+Here is how to find the name of a particular Worksheet or Chart in Workbook:
+<P>
+</FONT>
+<CODE>
+<PRE>
+XLApplication.Workbooks&#91;i&#93;.Sheets&#91;j&#93;.Name);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+If you spend a little while contemplating the Button1Click method, then the logic behind the objects in Microsoft Excel should begin to come clear to you. Of course, there are additional matters to be covered, such as entering data, and creating graphs. But, as you will see, most of that material is relatively straightforward once you understand the way the Excel object hierarchy works.
+<P>
+One important point to make before closing this section is that it often helps to assign a specific variable to one of the sub-objects in the hierarchy. For instance, in the example shown above I declare a <U>variant</U> named <U>Sheets</U> and set it equal to the <U>Application</U>.<U>Sheets</U> object:
+<P>
+</FONT>
+<CODE>
+<PRE>
+Sheets := Application.Sheets;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+To my mind it is sometimes easier to mentally parse code that is written this way rather than trying to always reference a series of qualified objects such as:
+<P>
+</FONT>
+<CODE>
+<PRE>
+XLApplication.Workbooks&#91;i&#93;.Sheets.Count
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+Obviously, there is more overhead involved if you use the technique of storing an object reference in a separate variant. However, the technology used to implement OLE Automation on the Excel side is perhaps necessarily not particularly efficient, so you shouldn't balk at using techniques like this if you think they will help you write clear, easy to maintain code. When trying to optimize your code, remember that trips between your application and Excel are very expensive. If you can limit the number of trips you need to make, then you will save clock cycles. But once again, this whole process is innately slow, so it's a bit silly to start fretting over a few lost clock cycles that most users will never even notice. 
+<P>
+As always, you should be particular aware of saving clock cycles when you are inside a loop. A call that takes one second to execute is easy for the user to bear if it occurs once. But put it in a loop, execute it 2000 times, and the user will hate you. A general rule of thumb is that users will happily wait up to two seconds for you to do almost anything. Longer than that and they get impatient. Two seconds is several eons in computer time, so normally you don't have to fret optimization issues. The Delphi team already did all the sweating for you. But when automating Excel or Word, you can get in trouble fairly quickly, so you may need to think about optimization in places where you wouldn't worry about it in a normal Delphi application. Remember that they call Excel automation &quot;Visual Basic for Applications&quot;. As you will see later, these Excel classes are actually real objects, so clearly this subject doesn't have much to do with Visual Basic, but the mere presence of the word Basic costs you, by default, thousands of clock cycles!
+   
+</TD></TR></TABLE><P ALIGN="LEFT">
+<P>
+
+
+<A HREF="/article/0,1410,10126,00.html" CLASS="heading3">Back to Previous Part</A>&nbsp;--&nbsp;    
+<A HREF="/article/0,1410,10128,00.html" CLASS="heading3">Forward to Next Part</A>
+<div id="toolbar2">
+                
+                  <ul>
+				 <LI><form name="shop" method="post" action="/article/shopReferal/1,1980,10127,00.html">
+		&nbsp;<a href="javascript:void document.shop.submit()" class="shop">Shop Borland</a>&nbsp;
+		</form></LI>  
+				  <li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li>
+				  <li><form name="download" method="get" action="http://www.borland.com/products/downloads/index.html">
+		 &nbsp;<a href="javascript:void document.download.submit()" class="downloads">Downloads</a>&nbsp;
+		</form></li></UL>
+</div>
+
+
+
+<P>
+
+ </SPAN>
+<P>
+<!-- Vignette StoryServer 4 Wed Oct 26 09:28:12 2005 -->
+     
+      
+		   
+		  
+
+
+
+          
+	    
+	    
+	    
+	    
+	      <!-- # of 1s: 0, # of 2s:0, # of 3s:1, # of 4s:5, # of 5s:6 6 is max, 10 is scalar, 0 is bar1a
+10127 is contentid-->
+
+    <form method=post action=/article/rating/save/1,1930,10127,00.html>
+
+    <table  border="0" cellspacing="0" ALIGN="left" VALIGN="Bottom">
+  <TR height="1">
+  	<TD COLSPAN="11" ><!-- Vignette StoryServer 4 Wed Oct 26 03:05:16 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/layout/bar_blue.gif" ALT="Blue Bar" width='700'  height='1'  BORDER='0'><!-line-></TD>
+  </TR>
+  <TR VALIGN="BOTTOM" ALIGN="CENTER">
+  	<TD ALIGN="RIGHT">Votes</TD>
+	<TD>&nbsp;</TD>
+	<TD>0</TD>
+	<TD>0</TD>
+	<TD>1</TD>
+	<TD>5</TD>
+	<TD>6</TD>
+	<TD>&nbsp;</TD>
+	<TD>&nbsp;</TD>
+    <td align="center" ROWSPAN="4">
+		<TABLE CELLSPACING="6">
+			<TR>
+				<TD VALIGN="MIDDLE" ALIGN="CENTER">
+			Responses:&nbsp;12 <BR>
+	                  Average:&nbsp;4.41667<BR>&nbsp;<BR>
+					  
+					  1=Poor, 5=Excellent
+				</TD>
+				<TD VALIGN="MIDDLE" ALIGN="CENTER">   <input type="hidden" name="contentID" value="10127">
+			
+				
+					 <!-- Vignette StoryServer 4 Wed Oct 26 09:28:13 2005 -->
+   
+		   
+
+	   <TABLE BORDER="0" CELLSPACING="0" CELLPADDING="1" ALIGN="CENTER">
+  <TR ALIGN="CENTER">
+	  <TD>1</TD>
+	  <TD>2</TD>
+	  <TD>3</TD>
+	  <TD>4</TD>
+	  <TD>5</TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD><input type="radio" name="rating"  value="1" ></TD>
+    <TD><input type="radio"  name="rating"  value="2" ></TD>
+    <TD><input type="radio"  name="rating" value="3" ></TD>
+	<TD><input type="radio"  name="rating" value="4" ></TD>
+    <TD><input type="radio"  name="rating" value="5" ></TD>
+  </TR>
+</TABLE>
+	 	 
+<input type="submit" name="Submit Rating" value="Rate Article">
+<!-- end of rating component-->  <BR>
+		  		</td>
+				<TD>
+				<SPAN CLASS="body3"><A HREF="http://threads.borland.com/threads/threads.exe/add?&sysid=1&contentid=10127&title=Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 2">Add</a> or 
+<A HREF="http://threads.borland.com/threads/threads.exe/thread?&sysid=1&contentid=10127&title=Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 2">View</a> comments
+				
+</TD>
+		 	 </TR>
+		  </TABLE>
+
+</TD>
+	 <TD ROWSPAN="4"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:17 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/leftnav/spacer.gif" ALT="" width='80'  height='1'  BORDER='0'></TD>
+	</TR>
+    <TR VALIGN="BOTTOM" ALIGN="CENTER">
+   	  <td ALIGN="RIGHT">&nbsp;</td>
+	  <td ALIGN="RIGHT"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:17 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/leftnav/spacer.gif" ALT="" width='10'  height='20'  BORDER='0'></td>
+	  <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="0" ALT="0 rated this 1"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="0" ALT="0 rated this 2"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="10" ALT="1 rated this  3"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="50" ALT="5 rated this 4"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="60" ALT="6 rated this 5"></td>
+	  <td ALIGN="RIGHT"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:17 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/leftnav/spacer.gif" ALT="" width='10'  height='20'  BORDER='0'></td>
+      <td ALIGN="RIGHT">&nbsp;</td>
+	  <td ALIGN="RIGHT">&nbsp;</td>
+    </tr>
+    <tr ALIGN="CENTER"> 
+		<td ALIGN="RIGHT">Rating</td>
+		<td>&nbsp;</td>
+        <td ALIGN="CENTER">1</td>
+    	 <td ALIGN="CENTER">2</td>
+       <td ALIGN="CENTER">3</td>
+       <td ALIGN="CENTER">4</td>
+       <td ALIGN="CENTER">5</td>
+       <td ALIGN="RIGHT">&nbsp;</td>
+	   <td ALIGN="RIGHT">&nbsp;</td>
+    </tr>
+   
+	<TR height="1">
+  	  <TD COLSPAN="11" align="LEFT" valign="top"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:16 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/layout/bar_blue.gif" ALT="Blue Bar" width='700'  height='1'  BORDER='0'></TD>
+	</tr>
+  </table>
+  <TABLE WIDTH="100%" ALIGN="CENTER"><TR><TD><IMG SRC="/images/layout/transparent.gif" ALT="" WIDTH="2"  HEIGHT="100"  BORDER="0"></TD></TR></TABLE><BR>
+</form><a name="rating">&nbsp;</a>
+<!-- end of rating component-->  </DIV><!--end content channel-->
+      <!-- END: Content Area -->
+ <!--end content td-->   
+<!-- END: Page Body -->
+
+	
+	
+
+
+		<!-- Vignette StoryServer 4 Sun Oct 23 14:54:50 2005 -->
+<br style="clear: both;" />
+
+
+<div id="footer-wrap">
+	<div id="footer">
+ 		Borland&reg; Copyright&copy; 1994 - 2005 Borland Software Corporation. All rights reserved<br />
+    <a href="http://www.borland.com/us/piracy/">Report Piracy</a> 
+    | <a href="http://www.borland.com/us/website/legal.html">Legal Notices</a> 
+<!-- | <a href="http://www.borland.com/us/resources/site_map.html">Site-> Map</a>--> 
+    | <a href="http://www.borland.com/us/website/privacy.html">Privacy 
+    Policy</a></div>
+</div>
+ </TD></TR></TABLE>
+		
+	 <!-- Vignette StoryServer 4 Wed May 15 11:28:33 2002 -->
+</BODY>
+ 
+</HTML>

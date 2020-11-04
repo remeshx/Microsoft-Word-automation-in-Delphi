@@ -1,0 +1,818 @@
+<!-- Vignette StoryServer 4 Sun Oct 23 17:53:23 2005 -->
+ 
+   <!-- Vignette StoryServer 4 Wed Oct 26 09:29:29 2005 -->
+
+	
+   
+
+        
+   
+
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+
+<HEAD>
+
+<TITLE>Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 4</TITLE>
+
+ <META NAME="KEYWORDS" CONTENT=""> 
+ <META NAME="DESCRIPTION" CONTENT="The goal of this two-part paper is to get you up to speed automating Excel and Word from a Delphi application.">
+
+<LINK REL="stylesheet" TITLE="Default" HREF="http://bdn.borland.com/styles/defaultNew.css" TYPE="text/css">
+<LINK REL="stylesheet" TITLE="Default" HREF="http://bdn.borland.com/styles2005.css" TYPE="text/css">
+<LINK REL="stylesheet" TITLE="Default" HREF="http://bdn.borland.com/styles/bdn.css" TYPE="text/css">
+<script type="text/javascript" src="http://bdn.borland.com/javascript/library.js"></script>
+<script type="text/javascript" src="http://bdn.borland.com/javascript/hide_show.js"></script>
+<!--Site Level a -->
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+ 
+<A NAME="top"></A><!-- Vignette StoryServer 4 Wed Oct 26 09:29:29 2005 -->
+
+ <!-- Site level is a -->
+
+      
+		
+	  
+	 
+ <div id="borland-sites">
+	<ul>
+		<li class="first-site"><div><a href="http://www.borland.com/">Borland.com</a></div></li>
+
+		<li class="selected"><div><A HREF="/">Borland Developer Network</a></div></li>
+		<li><div><a href="http://support.borland.com">Borland Support Center</a></div></li>
+		<li><div><a href="http://borland.ewebsmartlink.com/">Borland University</a></div></li>
+		<li><div><a href="http://www.borland.com/ww/">Worldwide Sites</a></div></li>
+		<li class="country-label"><A HREF="https://bdn.borland.com/cgi-bin/login/"><!-- Vignette StoryServer 4 Wed May 22 12:08:43 2002 -->
+<A HREF="https://bdn.borland.com/cgi-bin/login/" CLASS="bigBlack">Login</a></A></li>
+	</ul>
+</div>
+
+
+<br style="clear:both"/>
+		<div id="logo-area"> <a href="/"><img src="/images/logo-area/bdnetwork2.gif" width="326" height="40" alt="Borland" border="0" id="logo" /></a>
+		<div id="toolbar">
+                
+                  <form name="search" method="get" action="http://www.google.com/custom"><ul>
+				 <LI><A HREF="https://bdn.borland.com/cgi-bin/login/">My Account </A></LI>  
+				  <li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li><li><a href="/info/">Help</a></li><li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li><li class="searchbox"><input type="text" name="q" size="31" maxlength="255" value="" /></li><li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li><li><a href="javascript:void document.search.submit()" class="search">Search</a></li></ul><input type="hidden" name="cof" value="S:http://bdn.borland.com;AH:left;BGC:#FFFFFF;LH:51;LC:#0000FF;L:http://bdn.borland.com/images/topnav/bdnetwork2.gif;LW:383;T:#000000;AWFID:beeeba6b5662a726;" />
+
+  <input type="hidden" name="sitesearch" value="" />
+  <input type="hidden" name="sitesearch" value="borland.com" />
+  <input type="hidden" name="domains" value="borland.com" />
+  </form>
+</div>
+
+
+</div>	
+
+
+<!-- BEGIN: Primary Navigation -->
+<div id="primary-nav"> 
+ <div id="primary-nav-top"></div>
+  <ul id="primarynav">
+    <li  ><a href="#" ><IMG SRC="/images/primary-nav/application_lifecycle.gif" BORDER="0" WIDTH="131" HEIGHT="7" TITLE="Application Lifecycle"></a>
+	   <ul>
+        <li><a href="/caliberrm" >CaliberRM</a></li> 
+        <li><a href="/together" >Together</a></li>
+ 	    <li><a href="/java" >JBuilder</a></li>
+        <li><a href="/starteam" >StarTeam</a></li> 
+       </ul>
+    </LI> 
+    <li  ><a href="#"><IMG SRC="/images/primary-nav/ide.gif" BORDER="0" WIDTH="18" HEIGHT="7" TITLE="IDE"></A>
+		<ul>
+               	<li><a href="/java" >Java</a></li>
+				<li><a href="/delphi" >Delphi</a></li>
+				<li><a href="/csharp" >C#</a></li>
+       			<li><a href="/cpp" >C++</a></li>
+      	</ul>
+    </li>
+   <li  ><a href="#" ><IMG SRC="/images/primary-nav/application_middleware.gif" BORDER="0" WIDTH="150" HEIGHT="7" TITLE="Application Middleware"></A>
+      <ul>
+        <li><a href="/appserver">AppServer</a></li>
+	    <li><a href="/corba" >VisiBroker</a></li>
+ 		<li><a href="/interbase" >InterBase</a></li>
+        <li><a href="/jdatastore" >JDataStore</a></li>
+      </ul>
+    </li>
+    <li   ><a href="#"><IMG SRC="/images/primary-nav/more_resources.gif" BORDER="0" WIDTH="101" HEIGHT="7" TITLE="More Resources: Examples, Tools, Bugs, GetPublished, Events, Museum, etc."></a> 
+      <ul>
+     	<li><a href="/bdntv" TITLE="View product demonstrations & listen to Borland's developers and management." >BDN TV &amp; Radio</a></li>
+  		<li><a href="http://blogs.borland.com" >Blogs</a></li>
+		<li><a href="/books" TITLE="Find books covering Borland products." >Books</a></li>
+		<li><a href="http://qc.borland.com" Title="Submit bugs and feature requests. Also known as QualityCentral." >Bugs &amp; Suggestions</a></li>
+		<li><a href="/chat" >Chat</a></li>
+		<li><a href="/borcon" TITLE="Browse the rich resources of Borland's Annual Developer Conference Procedings." >Conference Proceedings</a></li>	
+		<li><a href="http://ec.borland.com" Title="View Borland related events in your area and post your own." >Events</a></li>
+		<li><a href="http://cc.borland.com" Title="Examples, code, etc.. Also known as CodeCentral." >Examples</a></li>
+       	<li><a href="/getpublished" TITLE="Submit your own articles to bdn for publication and get paid." >GetPublished</a></li>
+		<li><a href="/museum" TITLE="Download antique versions of Borland software." >Museum</a></li>
+  		<li><a href="http://support.borland.com/newsgroups" >Newsgroups</a></li>
+	 <li><a href="http://news.borland.com" Title="Listings of bdn articles in XML format." >News Feeds</a></li> 
+	  <li><a href="http://shop.borland.com" Title="Purchase Borland products online." >Shop</a></li> 
+	 <li><a href="http://btp.borland.com" Title="Browse the Borland Technology Partners database." >Technology Partners</a></li>
+      </ul>
+    </li>
+ </ul>
+  
+			
+</div>
+<!-- END: Primary Navigation -->		
+	
+<div id="mast"> 
+</div><P>&nbsp;</P><P> </P>
+
+<!-- Vignette StoryServer 4 Wed Oct 26 01:45:10 2005 -->
+ 
+
+     
+
+           
+              
+          <!-- BEGIN: Page Body ContentTable starts here-->
+
+<table cellpadding="0" cellspacing="0" border="0" id="channels">
+  <tr>
+<td id="channel-spacer-sm">&nbsp;</td>
+
+
+<td id="channel-spacer">&nbsp;</td>
+
+<td class="content-channel">
+	<div id="content">
+
+
+
+
+    <!-- Vignette StoryServer 4 Wed Oct 26 09:09:34 2005 -->
+ 
+
+
+
+<SCRIPT LANGUAGE=JavaScript>
+
+  function ResourceWin(hurl) {
+wid = window.open(hurl, "ResourceWin",
+"toolbar=yes,status=no,directories=no,location=no,scrollbars=yes,width=1000,height=700,resizable=yes","true");
+}
+  
+
+</SCRIPT>
+
+
+ 
+
+	
+			  <META NAME="author" CONTENT="Charles Calvert">
+<META NAME="id" CONTENT="10129">
+<META NAME="date" CONTENT="May 05 1997 12:00:00:000AM">
+<META NAME="creationdate" CONTENT="Sep 24 1999 06:57:34:000AM">
+<META NAME="type" CONTENT="White Paper">
+<META NAME="visibility" CONTENT="Public">
+<META NAME="product" CONTENT="">
+
+<META NAME="platform" CONTENT="">
+
+<P>&nbsp;<BR>
+
+<SPAN CLASS="title3">Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 4</SPAN>
+<SPAN CLASS="contentSectionHeading">  - by  Charles Calvert</SPAN><BR>
+<BR>		
+<!-- Vignette StoryServer 4 Wed Oct 26 09:29:29 2005 -->
+     
+		    
+
+
+
+          
+	   
+	   
+	   
+	   
+	        Rating: 
+<A HREF="#rating">
+ 
+<!-- Vignette StoryServer 4 Wed Oct 26 03:05:18 2005 -->
+
+	 
+	 
+	 
+	 
+	 <IMG SRC="/images/icons/star_5.gif" ALT="Rating is 4.5 - 5" width='65'  height='12'  BORDER='0'></a>
+&nbsp; &nbsp;
+Ratings:&nbsp;7 &nbsp; &nbsp; <A HREF="#rating">Rate it</A><BR>
+
+  <!-- end of rating summary component-->
+
+<BLOCKQUOTE CLASS="abstract"><B>Abstract:</B> The goal of this two-part paper is to get you up to speed automating Excel and Word from a Delphi application.&nbsp;</BLOCKQUOTE><P>
+ 
+<TABLE BORDER='0' CELLPADDING='0' CELLSPACING='0'>
+<TR><TD VALIGN='TOP'>
+
+<FONT SIZE="5"><B>Delphi and Microsoft Office: Automating Excel and Word</B></FONT><BR>
+<FONT SIZE="3">Copyright &copy; 1997 by Charlie Calvert</FONT><BR>
+<FONT SIZE="2">Here is the <A HREF="/article/images/10126/examples.zip">examples.zip</A> file.</FONT>
+<P>
+
+<B><U><A NAME="chart">Creating a Chart</A></U></B><BR>
+It is just as easy to create and work with a Chart as it is to do everything else in Excel automation. In the example shown in this section, refer to the online program called Excel4.dpr. The listing for this program is shown in Listing 4. I include the listing here so that you can take a quick glance through it, and then refer back to it during the discussion of its inner workings that follows this listing. In other words, I don't expect you to understand the program completely at a single glance, but will instead spend the remainder of this section discussing it in some depth.
+<P> 
+<B>Listing 4: The Excel4 programs shows how to work with charts.</B>
+<P>
+</FONT>
+<CODE>
+<PRE>
+unit Main;
+{
+  Main.pas
+  Copyright (c) 1997 by Charlie Calvert
+  Creating data and a chart in Excel and copying both to Word.
+}
+
+interface
+
+uses
+  Windows, Messages, SysUtils,
+  Classes, Graphics, Controls,
+  Forms, Dialogs, StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    XLApp: Variant;
+    WordApp: Variant;
+  public
+    procedure HandleData;
+    procedure ChartData;
+    procedure CopyData;
+    procedure CopyChartToWord;
+    procedure CopyCellsToWord;
+    procedure MailDocument;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+uses
+  ComObj, XLConst, WordConst,
+  ActiveX;
+
+{$R *.DFM}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  XLApp := CreateOleObject('Excel.Application');
+  XLApp.Visible := True;
+  XLApp.Workbooks.Add&#91;XLWBatWorksheet&#93;;
+  XLApp.Workbooks&#91;1&#93;.Worksheets&#91;1&#93;.Name := 'Delphi Data';
+  HandleData;
+  ChartData;
+  CopyData;
+  MailDocument;
+end;
+
+procedure TForm1.HandleData;
+var
+  Sheet: Variant;
+  i: Integer;
+begin
+  Sheet := XLApp.Workbooks&#91;1&#93;.Worksheets&#91;'Delphi Data'&#93;;
+  for i := 1 to 10 do
+    Sheet.Cells&#91;i, 1&#93; := i;
+end;
+
+procedure TForm1.ChartData;
+var
+  ARange: Variant;
+  Sheets: Variant;
+begin
+  XLApp.Workbooks&#91;1&#93;.Sheets.Add(,,1,xlChart);
+  Sheets := XLApp.Sheets;
+  ARange := Sheets.Item&#91;'Delphi Data'&#93;.Range&#91;'A1:A10'&#93;;
+  Sheets.Item&#91;'Chart1'&#93;.SeriesCollection.Item&#91;1&#93;.Values := ARange;
+  Sheets.Item&#91;'Chart1'&#93;.ChartType := xl3DPie;
+  Sheets.Item&#91;'Chart1'&#93;.SeriesCollection.Item&#91;1&#93;.HasDataLabels := True;
+
+  XLApp.Workbooks&#91;1&#93;.Sheets.Add(,,1,xlChart);
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;1&#93;.Values := ARange;
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Add(ARange);
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.NewSeries;
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;3&#93;.Values :=
+    VarArrayOf(&#91;1,2,3,4,5, 6,7,8,9,10&#93;);
+  Sheets.Item&#91;'Chart2'&#93;.ChartType := xl3DColumn;
+end;
+
+procedure TForm1.CopyData;
+var
+  Sheets: Variant;
+begin
+  SetFocus;
+  
+  Sheets := XLApp.Sheets;
+
+  Sheets.Item&#91;'Delphi Data'&#93;.Activate;
+  Sheets.Item&#91;'Delphi Data'&#93;.Range&#91;'A1:A10'&#93;.Select;
+  Sheets.Item&#91;'Delphi Data'&#93;.UsedRange.Copy;
+
+  CopyCellsToWord;
+
+  Sheets.Item&#91;'Chart1'&#93;.Select;
+  XLApp.Selection.Copy;
+
+  CopyChartToWord;
+end;
+
+procedure TForm1.CopyChartToWord;
+var
+  Range: Variant;
+  i, NumPars: Integer;
+begin
+  NumPars := WordApp.Documents.Item(1).Paragraphs.Count;
+  Range := WordApp.Documents.Item(1).Range(
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.Start,
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.End);
+  Range.Text := 'This is graph: ';
+
+  for i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add;
+
+  Range := WordApp.Documents.Item(1).Range(
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 1).Range.Start,
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 1).Range.End);
+
+  Range.PasteSpecial(,,,,wdPasteOleObject);  
+end;
+
+procedure TForm1.CopyCellsToWord;
+var
+  Range: Variant;
+  i: Integer;
+begin
+  WordApp := CreateOleObject('Word.Application');
+  WordApp.Visible := True;
+  WordApp.Documents.Add;
+  Range := WordApp.Documents.Item(1).Range;
+  Range.Text := 'This is a column from a spreadsheet: ';
+  for i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add;
+  Range := 
+    WordApp.Documents.Item(1).Range(WordApp.Documents.Item(1).      
+      Paragraphs.Item(3).Range.Start);
+  Range.Paste;
+  for i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  if not VarIsEmpty(XLApp) then begin
+    XLApp.DisplayAlerts := False;  // Discard unsaved files....
+    XLApp.Quit;
+  end;
+
+  if not VarIsEmpty(WordApp)then begin
+    WordApp.Documents.Item(1).Close(wdDoNotSaveChanges);
+    WordApp.Quit;
+  end;
+end;
+
+procedure TForm1.MailDocument;
+begin
+  WordApp.Documents.Item(1).SaveAs('c:foo.doc');
+  WordApp.Options.SendMailAttach := True;
+  WordApp.Documents.Item(1).SendMail;
+end;
+
+end.
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This code pops up a copy of Excel, inserts some data into it, creates two graphs of the data, then pops up a copy of Word, copies the cells from the worksheet to a new Word document, and then copies one of the charts into the same document. When you are through, you have a word document containing some spreadsheet cells with Delphi data in them, and below these cells, a graph. You may not see the graph at first when looking at your copy of Word. To find the graph, scroll the document down a bit. By default, there is a fairly large margin at the top of a graph, so you may need to scroll down further than you think. After creating the Word document, the user has a chance to mail it via Microsoft mail.
+<P>
+The Button1Click method drives the entire application:
+<P>
+</FONT>
+<CODE>
+<PRE>
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  XLApp := CreateOleObject('Excel.Application');
+  XLApp.Visible := True;
+  XLApp.Workbooks.Add&#91;XLWBatWorksheet&#93;;
+  XLApp.Workbooks&#91;1&#93;.Worksheets&#91;1&#93;.Name := 'Delphi Data';
+  HandleData;
+  ChartData;
+  CopyData;
+  MailDocument;
+end;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+Its starts by creating an Excel Application object, then sets the Visible property of the object to true, and adds a new workbook and stuffs a single worksheet into it. The Delphi application then calls my custom HandleData method to insert data into the spreadsheet:
+<P>
+</FONT>
+<CODE>
+<PRE>
+procedure TForm1.HandleData;
+var
+  Sheet: Variant;
+  i: Integer;
+begin
+  Sheet := XLApp.Workbooks&#91;1&#93;.Worksheets&#91;'Delphi Data'&#93;;
+  for i := 1 to 10 do
+    Sheet.Cells&#91;i, 1&#93; := i;
+end;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This method was explained earlier in this article, so I won't cover it again.
+<P>
+Now that you have a worksheet, and some data, then next step is to create a graph. The following procedure from the Excel4 program should get you started working with charts:
+<P>
+</FONT>
+<CODE>
+<PRE>
+procedure TForm1.ChartData;
+var
+  ARange: Variant;
+  Sheets: Variant;
+begin
+  XLApp.Workbooks&#91;1&#93;.Sheets.Add(,,1,xlChart);
+  Sheets := XLApp.Sheets;
+  ARange := Sheets.Item&#91;'Delphi Data'&#93;.Range&#91;'A1:A10'&#93;;
+  Sheets.Item&#91;'Chart1'&#93;.SeriesCollection.Item&#91;1&#93;.Values := ARange;
+  Sheets.Item&#91;'Chart1'&#93;.ChartType := xl3DPie;
+  Sheets.Item&#91;'Chart1'&#93;.SeriesCollection.Item&#91;1&#93;.HasDataLabels := True;
+
+  XLApp.Workbooks&#91;1&#93;.Sheets.Add(,,1,xlChart);
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;1&#93;.Values := ARange;
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Add(ARange);
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.NewSeries;
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;3&#93;.Values :=
+    VarArrayOf(&#91;1,2,3,4,5, 6,7,8,9,10&#93;);
+  Sheets.Item&#91;'Chart2'&#93;.ChartType := xl3DColumn;
+end;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This function creates two different charts. I've arranged things this way so you can get a look at some of the different techniques needed to create charts.
+<P>
+The code starts by adding a single chart to a Sheets object in a workbook:
+<P>
+</FONT>
+<CODE>
+<PRE>
+XLApp.Workbooks&#91;1&#93;.Sheets.Add(,,1,xlChart);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+As you can see, I just ignore the first two parameters, then explicitly state that I want to insert 1 sheet, and define its type as xlChart. The <U>Add</U> method was described in more depth earlier in this article.
+<P>
+A lot of the trick to working with Excel is to find the right object to work with. In my opinion, the <U>Sheets</U> object provides a simple and convenient way to create a chart, but it is not the only way of doing so. Remember that the <U>Sheets</U> object contains both the <U>Worksheets</U> and <U>Charts</U> objects inside a <U>Workbook</U>, so you can use it to add either worksheets or charts.
+<P>
+You should further understand that I am talking about adding <U>Charts</U> to a <U>Sheets</U> object, which is different from adding <U>ChartObjects</U> to a worksheet. In other words, you can insert a graph into a worksheet, but that is a different operation from the one I show here. The key to embedding a chart into a work sheet is the Excel ChartObjects collection, which is not discussed further in this article.
+<P>
+Once the chart has been created, the code then finds a range of data in the sheet to work on. In this particular example, the range is the same as produced back in the Excel 3 application, when I inserted 10 numbers into the A column, and then supplied a formula to add them up. In particular, note that I create a range object, then set the SeriesCollection of a Chart object to this range:
+<P>
+</FONT>
+<CODE>
+<PRE>
+  ARange := Sheets.Item&#91;'Delphi Data'&#93;.Range&#91;'A1:A10'&#93;;
+  Sheets.Item&#91;'Chart1'&#93;.SeriesCollection.Item&#91;1&#93;.Values := ARange;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+That is all you need to do to graph a range of data. As I will explain in a moment, you may want to manipulate the chart further, but just doing what I have done here is enough to start charting data.
+<P> 
+<P>It is probably worthwhile stepping back and looking at the SeriesCollection object and see what it represents. To get started, you needed to understand that a Series is simply a range of data that you want to graph. A SeriesCollection is a collection of ranges of data, that is, it is a collection of Series. For instance, if you had the values 1, 2, 3 in three cells in a spread sheet, then that would represent a range of three numbers which could be placed in a <U>Series</U>. By default, the graph of that series might look something like this, where each dash represents one unit in the Series 1, 2, 3:
+<P>
+-
+<P>
+--
+<P>
+---
+<P>
+If you had several Series together in one place, then that would be a SeriesCollection.
+<P>
+To see a SeriesCollection on the Excel side, load an Excel chart, right click on it, select the Source Data item from the menu, and turn to the Series page, as shown in Figure 1:
+<P>
+<B>Figure 1: Showing a series inside of Excel.</B>
+<P>
+This is the series created for the first graph made by the Excel4 program. As you can see, the series is described with a single cryptic line:
+<P>
+</FONT>
+<CODE>
+<PRE>
+='Delphi Data'!$A$1:$A$10
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+If you think about it for a second, you can see how this line corresponds to the code you wrote in Delphi. To help you see the relationship, I will write a single line of pseudo-code designed to highlight the relationship:
+<P>
+</FONT>
+<CODE>
+<PRE>
+  SeriesCollection.Item&#91;1&#93;.Values := 
+    Sheets.Item&#91;'Delphi Data'&#93;.Range&#91;A1:A10&#93;;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This line will not compile, but it contains the essence of what happens in the two lines of Delphi code which creates the <U>Series</U> shown from the Series<U>C</U>ollection.  It is similar to the data seen on the Excel side.
+<P>
+When you create a new chart, there is one <U>Series</U> made for you automatically. By default, it charts whatever value is in cell <U>A1</U> of a particular <U>Worksheet</U>. In this case, I have changed that series to point to a new range of data. In other words, I have changed the &quot;Values&quot; associated with the <U>Series</U>. As you will see in one moment, you can add additional series if you so desire. 
+<P>
+After creating the chart, the code defines it further by stating its type:
+<P>
+</FONT>
+<CODE>
+<PRE>
+Sheets.Item&#91;'Chart1'&#93;.ChartType := xl3DPie;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+And then goes on to specify that the chart has a series of data labels:
+<P>
+</FONT>
+<CODE>
+<PRE>
+Sheets.Item&#91;'Chart1'&#93;.SeriesCollection.Item&#91;1&#93;.HasDataLabels := True;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+Its time now to look at the second chart created by the ChartData method:
+<P>
+</FONT>
+<CODE>
+<PRE>
+  XLApp.Workbooks&#91;1&#93;.Sheets.Add(,,1,xlChart);
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;1&#93;.Values := ARange;
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Add(ARange);
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.NewSeries;
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;3&#93;.Values :=
+    VarArrayOf(&#91;1,2,3,4,5,6,7,8,9,10&#93;);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This chart graphs a SeriesCollection that contains not one, but three <U>Series</U>. The first and second <U>Series</U> are identical to the <U>Series</U> graphed by the first chart, but the third <U>Series</U> is slightly different, in that its values come not from an Excel worksheet, but from a range of data directly specified inside Delphi.
+<P>
+Take a moment to consider what is happening here. The first set of data graphed is specified exactly as in the previous example:
+<P>
+</FONT>
+<CODE>
+<PRE>
+Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;1&#93;.Values := ARange;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+Adding a new range specifies the next <U>Series</U>:
+<P>
+</FONT>
+<CODE>
+<PRE>
+Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Add(ARange);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+Finally, the code creates a new <U>Series</U> with no particular data:
+<P>
+</FONT>
+<CODE>
+<PRE>
+Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.NewSeries;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+The program than creates a variant array containing the values you want to chart in this third <U>Series</U>:
+<P>
+</FONT>
+<CODE>
+<PRE>
+  Sheets.Item&#91;'Chart2'&#93;.SeriesCollection.Item&#91;3&#93;.Values :=
+    VarArrayOf(&#91;1,2,3,4,5,6,7,8,9,10&#93;);
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+This is not the time nor place to discuss variant arrays, but the subject is treated in Chapter 25 of the Delphi User's Guide. The series created by this code is shown on the Excel side in Figure 2.
+<P>
+<B>Figure 2: A variant array created in Delphi as it is depicted inside Excel.</B>
+<P>
+In this case, I need not change the type of graph, since the default column chart does the job adequately. I could, however, add the following line of code to create a new effect:
+<P>
+</FONT>
+<CODE>
+<PRE>
+<P>Sheets.Item&#91;'Chart2'&#93;.ChartType := xl3DColumn;
+</PRE>
+</CODE>
+<FONT SIZE="2">
+<P>
+You are at last ready to copy the worksheet and two charts that you have created from Excel into Word. This is a relatively complex operation, so I will start a new section in this article to discuss it.
+   
+</TD></TR></TABLE><P ALIGN="LEFT">
+<P>
+
+
+<A HREF="/article/0,1410,10128,00.html" CLASS="heading3">Back to Previous Part</A>&nbsp;--&nbsp;    
+<A HREF="/article/0,1410,10130,00.html" CLASS="heading3">Forward to Next Part</A>
+<div id="toolbar2">
+                
+                  <ul>
+				 <LI><form name="shop" method="post" action="/article/shopReferal/1,1980,10129,00.html">
+		&nbsp;<a href="javascript:void document.shop.submit()" class="shop">Shop Borland</a>&nbsp;
+		</form></LI>  
+				  <li><img src="/images/logo-area/toolbar_separator.gif" alt="" height="20" width="2" /></li>
+				  <li><form name="download" method="get" action="http://www.borland.com/products/downloads/index.html">
+		 &nbsp;<a href="javascript:void document.download.submit()" class="downloads">Downloads</a>&nbsp;
+		</form></li></UL>
+</div>
+
+
+
+<P>
+
+ </SPAN>
+<P>
+<!-- Vignette StoryServer 4 Wed Oct 26 09:29:32 2005 -->
+     
+      
+		   
+		  
+
+
+
+          
+	    
+	    
+	    
+	    
+	      <!-- # of 1s: 0, # of 2s:0, # of 3s:0, # of 4s:0, # of 5s:7 7 is max, 10 is scalar, 0 is bar1a
+10129 is contentid-->
+
+    <form method=post action=/article/rating/save/1,1930,10129,00.html>
+
+    <table  border="0" cellspacing="0" ALIGN="left" VALIGN="Bottom">
+  <TR height="1">
+  	<TD COLSPAN="11" ><!-- Vignette StoryServer 4 Wed Oct 26 03:05:16 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/layout/bar_blue.gif" ALT="Blue Bar" width='700'  height='1'  BORDER='0'><!-line-></TD>
+  </TR>
+  <TR VALIGN="BOTTOM" ALIGN="CENTER">
+  	<TD ALIGN="RIGHT">Votes</TD>
+	<TD>&nbsp;</TD>
+	<TD>0</TD>
+	<TD>0</TD>
+	<TD>0</TD>
+	<TD>0</TD>
+	<TD>7</TD>
+	<TD>&nbsp;</TD>
+	<TD>&nbsp;</TD>
+    <td align="center" ROWSPAN="4">
+		<TABLE CELLSPACING="6">
+			<TR>
+				<TD VALIGN="MIDDLE" ALIGN="CENTER">
+			Responses:&nbsp;7 <BR>
+	                  Average:&nbsp;5.0<BR>&nbsp;<BR>
+					  
+					  1=Poor, 5=Excellent
+				</TD>
+				<TD VALIGN="MIDDLE" ALIGN="CENTER">   <input type="hidden" name="contentID" value="10129">
+			
+				
+					 <!-- Vignette StoryServer 4 Wed Oct 26 09:29:32 2005 -->
+   
+		   
+
+	   <TABLE BORDER="0" CELLSPACING="0" CELLPADDING="1" ALIGN="CENTER">
+  <TR ALIGN="CENTER">
+	  <TD>1</TD>
+	  <TD>2</TD>
+	  <TD>3</TD>
+	  <TD>4</TD>
+	  <TD>5</TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD><input type="radio" name="rating"  value="1" ></TD>
+    <TD><input type="radio"  name="rating"  value="2" ></TD>
+    <TD><input type="radio"  name="rating" value="3" ></TD>
+	<TD><input type="radio"  name="rating" value="4" ></TD>
+    <TD><input type="radio"  name="rating" value="5" ></TD>
+  </TR>
+</TABLE>
+	 	 
+<input type="submit" name="Submit Rating" value="Rate Article">
+<!-- end of rating component-->  <BR>
+		  		</td>
+				<TD>
+				<SPAN CLASS="body3"><A HREF="http://threads.borland.com/threads/threads.exe/add?&sysid=1&contentid=10129&title=Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 4">Add</a> or 
+<A HREF="http://threads.borland.com/threads/threads.exe/thread?&sysid=1&contentid=10129&title=Delphi 3 - Delphi and Microsoft Office: Automating Excel and Word - Page 4">View</a> comments
+				
+</TD>
+		 	 </TR>
+		  </TABLE>
+
+</TD>
+	 <TD ROWSPAN="4"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:17 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/leftnav/spacer.gif" ALT="" width='80'  height='1'  BORDER='0'></TD>
+	</TR>
+    <TR VALIGN="BOTTOM" ALIGN="CENTER">
+   	  <td ALIGN="RIGHT">&nbsp;</td>
+	  <td ALIGN="RIGHT"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:17 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/leftnav/spacer.gif" ALT="" width='10'  height='20'  BORDER='0'></td>
+	  <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="0" ALT="0 rated this 1"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="0" ALT="0 rated this 2"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="0" ALT="0 rated this  3"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="0" ALT="0 rated this 4"></td>
+      <td width="20" ALIGN="CENTER"><IMG SRC="/images/layout/bar_blue.gif" WIDTH="20" HEIGHT="70" ALT="7 rated this 5"></td>
+	  <td ALIGN="RIGHT"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:17 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/leftnav/spacer.gif" ALT="" width='10'  height='20'  BORDER='0'></td>
+      <td ALIGN="RIGHT">&nbsp;</td>
+	  <td ALIGN="RIGHT">&nbsp;</td>
+    </tr>
+    <tr ALIGN="CENTER"> 
+		<td ALIGN="RIGHT">Rating</td>
+		<td>&nbsp;</td>
+        <td ALIGN="CENTER">1</td>
+    	 <td ALIGN="CENTER">2</td>
+       <td ALIGN="CENTER">3</td>
+       <td ALIGN="CENTER">4</td>
+       <td ALIGN="CENTER">5</td>
+       <td ALIGN="RIGHT">&nbsp;</td>
+	   <td ALIGN="RIGHT">&nbsp;</td>
+    </tr>
+   
+	<TR height="1">
+  	  <TD COLSPAN="11" align="LEFT" valign="top"><!-- Vignette StoryServer 4 Wed Oct 26 03:05:16 2005 -->
+
+	
+	
+	 
+	 
+	 <IMG SRC="/images/layout/bar_blue.gif" ALT="Blue Bar" width='700'  height='1'  BORDER='0'></TD>
+	</tr>
+  </table>
+  <TABLE WIDTH="100%" ALIGN="CENTER"><TR><TD><IMG SRC="/images/layout/transparent.gif" ALT="" WIDTH="2"  HEIGHT="100"  BORDER="0"></TD></TR></TABLE><BR>
+</form><a name="rating">&nbsp;</a>
+<!-- end of rating component-->  </DIV><!--end content channel-->
+      <!-- END: Content Area -->
+ <!--end content td-->   
+<!-- END: Page Body -->
+
+	
+	
+
+
+		<!-- Vignette StoryServer 4 Sun Oct 23 14:54:50 2005 -->
+<br style="clear: both;" />
+
+
+<div id="footer-wrap">
+	<div id="footer">
+ 		Borland&reg; Copyright&copy; 1994 - 2005 Borland Software Corporation. All rights reserved<br />
+    <a href="http://www.borland.com/us/piracy/">Report Piracy</a> 
+    | <a href="http://www.borland.com/us/website/legal.html">Legal Notices</a> 
+<!-- | <a href="http://www.borland.com/us/resources/site_map.html">Site-> Map</a>--> 
+    | <a href="http://www.borland.com/us/website/privacy.html">Privacy 
+    Policy</a></div>
+</div>
+ </TD></TR></TABLE>
+		
+	 <!-- Vignette StoryServer 4 Wed May 15 11:28:33 2002 -->
+</BODY>
+ 
+</HTML>

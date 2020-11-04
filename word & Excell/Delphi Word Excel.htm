@@ -1,0 +1,1526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0070)http://homepages.borland.com/ccalvert/TechPapers/Delphi/DelphiWord.htm -->
+<HTML><HEAD><TITLE>Delphi Word Excel</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><LINK 
+href="Delphi Word Excel_files/Arcs.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Delphi and Microsoft Office: Automating Excel and Word</H1>
+<P><I>Copyright (c) 1997 by Charlie Calvert</I></P>
+<P>The goal of this two-part paper is to get you up to speed automating Excel 
+and Word from a Delphi application. Most of the text will focus on Excel, but 
+you will find that if you understand Excel automation, that you need only a few 
+hints to get started automating Word. If you are primarily interested in Word, I 
+ask you to patiently read through the material on Excel, as almost all of it 
+applies to Word. </P>
+<P>You can use Delphi to fully control virtually all the features of Excel and 
+Word. There is very little that you can do from inside Excel or Word that you 
+cannot also automate from outside Excel or Word. In other words, both Excel and 
+Word can be fully controlled from Delphi applications using OLE Automation.</P>
+<P>For the most part the act of controlling Excel or Word from a Delphi 
+application is not terribly challenging. Whatever difficulty there is comes not 
+from Delphi’s side of the equation, but from the innate complexity of the Excel 
+and Word object hierarchies. Not that I find the hierarchies unreasonable, but 
+they do encapsulate sufficient complexity to require a significant period of 
+study. In particular, these automation classes give you rather detailed control 
+over Word and Excel. Since these are complex applications, the interface to them 
+also needs to be complex if it is not to be considered under powered. The 
+purpose of this paper is to unscramble that hierarchy and show its underlying 
+structure.</P>
+<P>This paper is divided into two parts. The first part shows automating Word 
+and Excel using variants and IDispatch, and the second part shows how to perform 
+the same tasks with dispinterfaces and standard COM interfaces. All of these 
+technologies are closely related. However, there are two significant differences 
+between them:</P>
+<OL type=1>
+  <LI>Using variants is usually the easiest, the most terse, but also the 
+  slowest way to get things done in terms of performance. 
+  <LI>Using COM interfaces is usually the most difficult, the most verbose, but 
+  also yields the highest performance.</SPAN> </LI></OL>
+<P>There may be a short gap between the time the first and second parts of the 
+paper are published. </P>
+<P>When writing this paper I have attempted to explain things as clearly as 
+possible. I’m aiming this paper primarily at intermediate or experienced 
+programmers, but I hope it is accessible to anyone who has a basic understanding 
+of how to use Delphi, Word and Excel. Though you should not need a high level of 
+expertise to understand this paper, I am trying to cover the subject in some 
+depth. Other sources, such as my book <I>Dephi 2 Unleashed (Chapter 29)</I>, and 
+the magazine the <I>Delphi Informant</I> (June 1997), covers some of this same 
+material in a simpler, less in depth fashion. For many people a more high level, 
+abstracted view may be more appropriate. But I believe there is also a big need 
+for a more detailed look at this subject, which is why I have written this 
+paper. </P>
+<P>One final note: in my writing, I tend to use repetition to emphasize 
+important points. This is a consciously exercised technique designed to make 
+this paper as easy as possible to understand, while simultaneously ensuring that 
+you don’t accidentally skip over an essential point. Another benefit of 
+repetition is that people tend to use articles of this type as a reference. As a 
+result, they don’t always read them from beginning to end every time they refer 
+to them. As a result, it helps to give a one sentence review of key points that 
+relate to the topic under discussion. </P>
+<H3>System Requirements</H3>
+<P>This paper was written against Delphi 3.01 and Microsoft Office 97. Portions 
+of the paper would also work with Office 95, but the sections on interfaces, in 
+particular, require that you use Office 97.</P>
+<P>To perform automation successfully with Excel or Word you need a fairly 
+powerful system with lots of RAM. I’ve been automating Excel for at least four 
+years. When I first started out, I considered the technology a bit suspect 
+simply because it was terribly slow. Now, however, our machines are powerful 
+enough to take Excel through its paces in a few short moments. In particular, if 
+you have a Pentium 120 class machine or above, and at least 48 MB of ram, then 
+this technology works well for many types of projects. Excel or Word will now 
+load quite quickly, and you can open and insert data into them in the blink of 
+an eye. However, if you want to iterate over lots of data inside a Word or Excel 
+document, then that can be a bit time consuming when compared to performing 
+similar tasks inside of a Delphi application. </P>
+<P>The bottom line here is that if you know Excel can do something well, and you 
+know your target machines are powerful and will have Excel loaded on them, then 
+there is no reason to search for third party components to perform spreadsheet 
+related functions. Instead, you can just automate Excel from inside a Delphi 
+application and get your work done professionally in just a few short hours. The 
+icing on the cake is that you can then use MAPI to mail the results of your work 
+to anyone who has a mail system and the ability to read Excel files. The point 
+being that the recipient of your work need not actually have a copy of your 
+Delphi application running when viewing the output from your program. Instead 
+you can just send them the results in an Excel or Word document. Word document 
+viewers can be downloaded for free from Microsoft's web site at 
+www.microsoft.com.</P>
+<P><B><U>Getting Started with Delphi and Excel</U></B></P>
+<P>There are two different ways to run OLE automation from inside Delphi. One 
+involves using interfaces, while the second involves using an OLE class called 
+<U>IDispatch</U> along with a Delphi type called a variant. Interfaces give you 
+the advantage of type checking your code on the client side, as well as 
+relatively high performance. However, I am going to start the paper working with 
+the somewhat easier to understand <U>IDispatch</U> and variants technology, and 
+move on to cover interfaces after all the basics are clearly established. Do not 
+worry if you don’t yet understand the differences between the two techniques, as 
+this subject will be cleared up over the course of the paper. At this stage, you 
+just need to be aware that there are at least two ways to access OLE automation 
+objects from Delphi, and that I am going to start out by showing you one that 
+uses <U>IDispatch</U> and variants.</P>
+<P>The following code, found in Listing 1, shows a bare bones example of a 
+Delphi application that launches Excel. Just skim over the code for now, as I 
+will spend the rest of this section of the paper explaining how it works.</P>
+<P>&nbsp;</P>
+<P><B>Listing 1: The main form from the Excel1 application found with the code 
+samples that accompany this article.</B></P><PRE>unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils,
+  Classes, Graphics, Controls,
+  Forms, Dialogs, StdCtrls;
+    
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+  public
+    V: Variant;
+  end;
+  
+var
+  Form1: TForm1;
+  
+implementation
+
+uses
+  ComObj;
+
+{$R *.DFM}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  V := CreateOleObject('Excel.Application');
+  V.Visible := True;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  if not VarIsEmpty(V) then
+    V.Quit;
+end;
+
+end.
+
+</PRE>
+<P>You can find this example on disk, in the program called Excel1.dpr. The code 
+does nothing more than create an instance of Excel, make it visible, and then 
+close it down when the user exists the Delphi application. The code does not 
+check to make sure the user is not creating multiple instances of the 
+application, but it does close down a single copy of Excel when you exit. </P>
+<P>From Delphi’s side, you should always start your automation applications by 
+including COMObj in the <U>uses</U> clause. COMObj contains routines for 
+retrieving OLE automation objects, and for dispatching calls to them. In 
+particular, you usually use <U>CreateOleObject</U> to retrieve an automation 
+object, and behind the scenes Delphi uses the COMObj routines 
+<U>VarDispInvoke</U>, <U>DispatchInvoke</U> and <U>GetIDsOfNames</U>, to call an 
+object. I will give you a bit more information on these routines in just one 
+moment. The rest is simply a matter of using a built in Delphi type called a 
+<U>variant</U> to reference the objects that reside inside Excel.</P>
+<P>Here are a few simple lines of code that launch Excel from inside 
+Delphi:</P>var V: Variant; begin V := CreateOleObject('Excel.Application'); 
+V.Visible := True; end; 
+<P>The first line of code after the <U>begin</U> statement launches Excel. The 
+call to CreateOleObject is relatively complex, so I will explain it in the next 
+section of the paper.</P>
+<P>After executing the first line, Excel will come up in the background, 
+entirely offscreen, invisible to the user. This may, in fact, be the effect you 
+want to achieve. However, when you first start out programming Excel, and 
+whenever you are debugging your Excel automation application, you probably want 
+to be able to see what is going on inside Excel. Therefore, I set the 
+<U>Visible</U> property of the Excel <U>Application</U> object equal to 
+<U>True</U>. This ensures that you can see what is actually happening on the 
+Excel server. If you have thoroughly debugged your application you may want to 
+skip this step, but I will include it in all the examples I cover in this 
+paper.</P>
+<P>Of course, I haven’t told you enough yet to make the code shown above 
+entirely comprehensible. What is the purpose, for instance, of the variable 
+<U>V</U>? What does <U>CreateOleObject</U> actually do?</P>
+<P>As it turns out, the answers to these questions are non-trivial. The variable 
+<U>V</U> is a <U>variant</U>, and <U>CreateOleObject</U> creates an instance of 
+a COM object called <U>IDispatch</U> and returns it to you inside a 
+<U>variant</U>. But saying as much doesn’t help much if you don’t understand 
+COM, <U>IDispatch</U>, and <U>variants</U>.</P>
+<P>There are three courses I could take at this point. One would involve an in 
+depth explanation of COM and OLE, a second would give you only the minimal 
+amount of information needed to keep going, and the third would be to find some 
+middle ground. In this case I am going to opt for the latter solution, and leave 
+it up to you to pursue COM in more depth on your own. I will however, discuss 
+this subject over the next few paragraphs, and come back to it again in the 
+second part of the paper. If you want even more information, some references to 
+get you started are as follows:</P>
+<P>I have an article on <I>Delphi and DCOM</I> on my WEB site: <A 
+href="http://users.aol.com/charliecal">http://users.aol.com/charliecal</A>, and 
+also cover the subject in the book <I>Delphi 2 Unleashed</I>.<SPAN 
+style="COLOR: white"></SPAN></P>
+<P>Microsoft has extensive documentation on this subject: <A 
+href="http://www.microsoft.com/com">http://www.microsoft.com/com</A> </P>
+<P>The User's Guide from the Delphi 3 docs contains some text on this subject in 
+Chapter 25.</P>
+<P>The only thing you really need to know at this stage is that Microsoft has 
+created a special type of object oriented programming called COM, which allows 
+you to retrieve and call the methods of an object from a number of different 
+languages. The COM object model is different from the one used by native Delphi 
+programmers, so Borland gives you two choices:</P>
+<P>You can followed Microsoft’s lead and call the methods of these special 
+objects off a variable type called a variant. This is the technique described in 
+the first part of this paper.</P>
+<P>You can follow a second, more technical approach and use <U>interfaces</U> or 
+<U>dispinterfaces</U>.</P>
+<P>One of the key differences between using interfaces and using variants is 
+that interfaces allow you to call COM objects using the much faster dispatching 
+technologies native to Object Pascal. As I will explain in Part II of this 
+article, dispinterfaces follow a middle path between the variant technology and 
+the interface technology. </P>
+<P>COM is the underlying object model that makes OLE and ActiveX programming 
+possible. At times I will use OLE and COM as virtual synonyms. ActiveX is yet a 
+third very closely related technology, but I will not touch on it in this paper. 
+However, it no longer incorrect to also use the words COM and ActiveX as virtual 
+synonyms. </P>
+<P><U>Variants</U> get their name because they can provide a wide <I>variety</I> 
+of functions, depending on the circumstances. For instance, they can contain a 
+string, an integer, or, in special cases, a COM object. In other words, the type 
+of variable held in a variant <I>varies</I> from one occasion to the next. 
+That’s why they call them variants. (For more information, look up "Variant 
+Types" in the Delphi online help, or else look at the declarations for the 
+structures used with <U>variants</U> at the top of System.pas.)</P>
+<P><U>CreateOleObject</U> calls a number of internal system wide OLE functions. 
+The end result of these series of calls is that the function returns a COM 
+object to you containing an <U>interface</U> to the object you want to call. In 
+particular, you get back a <U>variant</U> that is wrapped around a COM object 
+called <U>IDispatch</U>. A combination of the built in <U>IDispatch</U> methods, 
+and various Delphi technologies covered briefly later in this paper, allows you 
+to call the methods of the object your requested.</P>
+<P>With all this in mind, let’s go back and view the two lines of code that 
+retrieve the Excel object:</P>V := CreateOleObject('Excel.Application'); 
+V.Visible := True; 
+<P>The first line of code asks for an object that resides inside Excel called 
+<U>Application</U>. <U>CreateOleObject</U> retrieves an instance of the object 
+in the form of an <U>IDispatch</U> interface encapsulated inside a variant 
+called <U>V</U>. This variant is valuable to you because it allows you to call 
+the methods and properties of the Excel object using a very simple syntax. For 
+instance, you can access the <U>Visible</U> property of the object by simply 
+writing <U>V.Visible := True</U>. </P>
+<P>It would be mistake, however, to assume that the line of code containing the 
+Visible property is doing the same thing as a standard Delphi line of code that 
+looks like this:</P>Form1.Visible := True; 
+<P>Admittedly these two lines look the same, and have exactly the same syntax. 
+But internally, something very different is going on. In particular, if you call 
+the <U>Visible</U> property of a Delphi form object then the property is changed 
+almost instantly. Calling the <U>Visible</U> property of an OLE automation 
+<U>variant</U> sets off a series of internal events that end up resulting in a 
+change to the <U>Visible</U> property of an object inside Excel, but there are 
+many steps that occur along the way. In particular, several methods of 
+<U>IDispatch</U> such as <U>GetIDsOfNames</U> and <U>Invoke</U> must first be 
+called behind the scenes before the call is complete. </P>
+<P>This paper is not designed to cover the mechanisms used in dispatching a call 
+on a variant encapsulated COM object, nor is it necessary for you to understand 
+how it works in order to use this technology. The key point to grasp is merely 
+that things aren’t quite as simple as they at first appear. Having said all 
+that, I will now show you how to get into this subject a bit deeper if you so 
+desire, and if you have the source to the VCL on your machine.</P>
+<P>To get started, copy COMObj.pas and COMObj.inc from the Delphi Source\Rtl\Sys 
+directory to the same directory where Excel1 is stored. Now rebuild the project 
+so these local copies of COMObj are linked into your program. Put a breakpoint 
+on the line <U>V.Visible := True</U>, and then run the program. When you get to 
+the breakpoint, press F7 to step into the code. You will find that you are taken 
+immediately to the <U>VarDispInvoke</U> method found in COMObj.pas. From there 
+you will go to <U>GetIDsOfNames</U>, and finally to <U>DispatchInvoke</U>. What 
+is happening here is that the appropriate methods of the IDispatch interface are 
+being called behind the scenes by Delphi in order to "invoke" your call to 
+Excel. </P>
+<P>One of the lessons to be learned from this is that at bottom, there is not 
+such a big difference between the interface technology shown in the second part 
+of this paper and the variant based technology I am discussing here. For 
+instance, IDispatch is an interface, and ultimately this interface must be 
+called for the variant based technology to work. In fact, IDispatch is designed 
+in such a way as to make the variant based technology even more complex than the 
+standard interface technology seen in the second half of this paper. Only Delphi 
+is able to hide that complexity from you, so that you do not need to understand 
+it at all in order to use variants to call automation objects. (Once again, I 
+need to emphasize that I am not giving a full explanation of this technology in 
+this paper. If you want to really understand IDispatch, then you should check 
+out the resources mentioned earlier in this section of the paper.)</P>
+<P>One of the biggest consequences of calling the methods of an object off a 
+variant is that Delphi cannot type check your code at design time. In other 
+words, Delphi does not really know whether or not the Excel Application object 
+has a property called Visible. It is taking you at your word when you claim this 
+is true. In this case, that proves to be the correct thing to do. However, it 
+would also compile without error the following code:</P>V.TransferMoney("From := 
+Bill Gates", "To := Charlie Calvert", 100000); 
+<P>This line of code is certainly intriguing, but the Excel Application object 
+unfortunately does not support it. This means that a program containing it will 
+compile and load without error, but a call to the TransferMoney property at run 
+time will raise an exception. Both Delphi and Excel are able to handle this 
+exception flawlessly, without destabilizing the system in any way. It is nice, 
+however, if you can type check at design time, rather than having to wait to run 
+time to see if all is set up correctly. The interface and dispinterface 
+technologies covered in Part II of this paper shows how to get design time type 
+checking of OLE objects.</P>
+<P>I’ve spent the last several paragraphs describing <U>IDispatch</U> and 
+<U>variants</U>. This is an important subject, but one that you need not 
+understand in depth in order to use this technology. If all is not clear to you 
+yet, you can still continue without fear. If you are hungry for more details, be 
+patient and I will return to this subject Part II, or else you should follow the 
+links shown earlier in this section.</P>
+<P>After you have created an Excel Application object, you need some way to 
+close it down. You can do this by calling its <U>Quit</U> method:</P>if not 
+VarIsEmpty(V) thenV.Quit; 
+<P>What this code does is check to make sure that the <U>variant</U> <U>V</U> 
+refers to something, and then it attempts to call the <U>Quit</U> method of the 
+Excel application object. If <U>V</U> is indeed a valid pointer to such an 
+object, then Excel will close. This code is not perfect in all cases, since 
+<U>V</U> could contain a reference to something other than an Excel Application 
+object, thereby allowing <U>VarIsEmpty</U> to return true, even though the call 
+to <U>V.Qui</U>t would fail. For instance, I could write:</P>V := 10; 
+<P>After making this call <U>VarIsEmpty</U> would return false, but the call to 
+<U>V.Quit</U> would obviously fail. However, in the Excel1 application, found in 
+Listing 1, <U>V</U> will usually be either empty, or else pointing to a COM 
+object. Therefore the code is reasonably robust. The key point, at any rate, is 
+that you don’t want to fail to <U>Quit</U> the <U>Application</U> object or else 
+you can end up cluttering memory with instances of this object. Remember that 
+Excel owns the <U>Application</U> object, and it will not necessarily be removed 
+from memory just because you close your Delphi application. In other words, you 
+should definitely call <U>Application</U> <U>Quit</U> or else repeated calls to 
+Excel from a Delphi application will bog down your machine by draining system 
+resources.</P>
+<P><B><U>Creating Excel Automation Objects</U></B></P>
+<P>Now that you have been introduced to the topic of automating Excel, the next 
+step is to learn something about what it means to create an OLE automation 
+object. </P>
+<P>The call to <U>CreateOleObject</U> returns a COM object called IDispatch 
+housed inside a variant. You can pass a string to <U>CreateOleObject</U> 
+specifying the name of the COM object you wished to retrieve. In this case, I 
+have retrieved the main Excel Automation object, by passing in the string 
+"<U>Excel</U>.<U>Application’</U>. If you are familiar with the registry, you 
+can find this string there, and can trace that reference to the CLSID associated 
+with the LocalServer that returns the object. If you don’t know anything about 
+CLSIDs, or about LocalServers, I wouldn’t feel too concerned. The point is 
+simply that <U>CreateOleObject</U> returns a COM object of your choice if you 
+pass in the correct string. In particular, it looks up your string in the 
+registry, finds the CLSID associated with the string, looks up the CLSID, and 
+finds the LocalServer associated with that CLSID. The local server will be 
+string pointing at the application that contains the object you want to 
+retrieve. For instance, in this case, on my system, the Local Server string 
+looks like this:</P>C:\Program Files\Microsoft Office\Office\excel.exe 
+/automation 
+<P>This string is copied directly from the REGEDIT.EXE application that ships 
+with all copies of Windows. I found it in HKEY_CLASSES_ROOT\CLSID, under the 
+guid listed next to Excel.Application. Guids are 64 byte numbers designed to 
+uniquely identify an object.</P>
+<P>If you want to trace out the details of this operation, and if you have the 
+source to the VCL, you can open up COMObj.pas and find the implementation of 
+<U>CreateOleObject</U>. It consists of a simple call to <U>CoCreateInstance</U>. 
+<U>CoCreateInstance</U> is a Windows API routine that is part of the OLE 
+specification. Its purpose is to retrieve an object from a binary file such as 
+an executable or DLL.</P>
+<P>The strings you pass into CreateOleObject are called ProgIDs. As you just 
+saw, all the ProgIDs valid on your system are listed in the registry under the 
+section HKEY_CLASSES_ROOT. (I cover this subject in more depth in the article on 
+my web site entitled Delphi and COM.) The Delphi documentation is not the place 
+to turn to find the ProgIDs you pass in to the various COM servers available on 
+your system. Instead, you should turn to the documentation for the application 
+you wish to control. For instance, Excel has extensive COM documentation in an 
+online help file that ships with Microsoft Office called VBAXL8.HLP. (Break it 
+down: VBA: Visual Basic for Applications, XL: Excel, 8: Version number.) If you 
+are doing a lot of OLE Automation with Excel then you should add this file to 
+Delphi’s tools menu so you can get at it easily. For information on retrieving 
+objects, use the Index feature in the Excel help to look up "OLE programmatic 
+identifiers". </P>
+<P>In the Excel online help, you will find that this spreadsheet application has 
+three main objects you can retrieve using 
+<U>CreateOleObject</U>:</P>CreateOleObject(‘Excel.Application’);CreateOleObject(‘Excel.Sheet’);CreateOleObject(‘Excel.Chart’); 
+
+<P>These strings, and slight variations on these strings, are the only valid 
+parameters to pass to <U>CreateOleObject</U> if you want to talk to Excel via 
+COM. There are many, many more objects inside of Excel. However, these three are 
+the only ones you can retrieve from outside of Excel using the 
+<U>CreateOleObject</U> function. Once you have retrieved one of these objects, 
+you can use it as your access to all the other objects in the Excel hierarchy. 
+Getting at these objects is a bit like unwinding a ball of thread. You first 
+need a handle to the ball of thread, which you get by calling 
+<U>CreateOleObject</U>. Once you have a handle, you can use it to get to all the 
+different objects inside Excel. Just keep pulling at the thread you get back 
+from <U>CreateOleObject</U> and all the rest of the objects will come unraveled. 
+This subject is explained in more depth in the next section.</P>
+<P><B><U>Understanding Excel Automation Objects</U></B></P>
+<P>If you are an exp<A name=Sam></A>erienced Delphi programmer, you may find OLE 
+objects a bit confusing at first. Like standard Pascal objects, they exist 
+inside a hierarchy, but that hierarchy, at least as it is presented to the 
+public, is not based on inheritance. Instead, the main glue that holds the 
+hierarchy together is the fact that you can access one particular object from 
+another particular object.</P>
+<P>For instance, the top member of the Excel hierarchy is called Application. 
+Beneath it is the Workbooks object, and beneath that are the Worksheets and 
+Charts objects:</P>1) Application:A) Workbooks&nbsp;&nbsp;i) 
+Worksheets&nbsp;&nbsp;ii) Charts 
+<P>If you want to get at the Workbooks object, then you can access it from the 
+Application object:</P>MyWorkbooks:= Application.Workbooks; 
+<P>If you want to get at the Worksheets object, then you can access it from the 
+Workbooks object. And so on. In the code shown here, you would declare 
+MyWorkbooks as a variant. In all cases, during this first part of the article, I 
+am using variants to access the underlying Excel objects. Getting an actual 
+interface to a Workbooks interface is covered in the second part of the 
+article.</P>
+<P>If you saw this hierarchy in a Delphi application, you would assume that 
+Workbooks is a descendant of Application, and Worksheets a descendant of 
+Workbooks. That kind of thinking is completely off center when it comes to OLE 
+automation. The standard OOP hierarchy found in C++ and Pascal has nothing to do 
+with OLE Automation. This is a totally different kind of hierarchy intended only 
+to express which objects can be accessed from another object. As you will see in 
+the second part of this paper, it may also be true that there is a valid OOP 
+inheritance based hierarchy simultaneously implemented on this objects. However, 
+that hierarchy is not the main one you focus on when using automation, and in 
+fact, I think it is easiest at first to pretend that it does not exist at 
+all.</P>
+<P>If you want to talk about all the Worksheets and Charts in a Workbook, then 
+you use the Sheets object. When thinking about the Sheets object, you could 
+rewrite the hierarchy shown above as follows:</P>1) ApplicationA) 
+Workbooks&nbsp;&nbsp;i) Sheets&nbsp;&nbsp;ii) Worksheets&nbsp;&nbsp;iii) Charts 
+<P>The point is that this hierarchy is meant to denote the order in which you 
+access objects, and as such it has a somewhat more slippery structure than you 
+would fine in a typical inheritance hierarchy. In fact, it seems that you can 
+get at most any object from any one point in the hierarchy, so the actual 
+structure of the hierarchy is a little dependant on your current position inside 
+it.</P>
+<P>You get at the Workbooks object from Application object. You get at the 
+Sheets, Worksheets and Charts objects from the Workbooks object:</P>
+<P>MyCharts := Application.Workbooks[I];</P>
+<P>It would be untrue to say that the Application object is synonymous with the 
+binary file Excel.exe, but it does have some things in common with this 
+executable. For instance, the Application object is the most abstracted, the 
+most generalized way that you have of referring to the set of available Excel 
+automation objects. If you open up Excel and have no documents loaded, then you 
+are looking at a visual representation of the Application object. This is not 
+the same thing as the Application object, but it can serve as a metaphor for 
+what the object does. It is analogous to it. It is the highest level container 
+for accessing all of the functionality available from Excel. However, it is so 
+generalized that it can’t do much that is useful without help from other 
+objects. But you get at those other objects by starting with the Application 
+object. All this is equally true of Excel.exe. If you open up Excel.exe with no 
+documents in it, then it has little use on its own, but it is still the gateway 
+you would use to access all these documents.</P>
+<P>The WorkBooks object contains a collection of Worksheets and Charts. A 
+Worksheet is just a standard page from a spreadsheet, while a Chart is just a 
+graph. The Sheets object contains both Worksheets and Charts, while the 
+Worksheets and Charts objects contain only Worksheets or Charts. Your job as an 
+Excel automation programmer is to start learning how to make statements like 
+these. In other words, this is the kind of logic that underlies the Excel 
+hierarchy of objects. As an automation programmer your job is to start to figure 
+out how to get at one object from another object, and to understand what each 
+object does. </P>
+<P>Here is another way to think about what you, as an Excel automation 
+programmer, are really trying to do. Most computer users understand how to use 
+Excel. The automation objects discussed in this paper allow you to write code 
+that manipulates Excel just as you would manipulate Excel with a mouse. You 
+probably already know how to open a spreadsheet, enter data, perform 
+calculations, and chart data. You goal as an automation programmer is to find 
+out how to do the same things in code. You just need to know which object refers 
+to which set of tools inside Excel. Figure that out, and figure out how to get 
+at each of these objects given the existence of an Application object, and then 
+you are ready to roll!</P>
+<P>The program shown in Listing 2 provides a summary of the major points made in 
+this section of the paper. Glance over it once, and then read on to find an 
+explanation of how it works.</P>
+<P>&nbsp;</P>
+<P><B>Listing 2: The Excel2 program shows how the objects in Excel are arranged 
+hierarchically.</B></P><PRE>
+//////////////////////////////////////
+// Purpose:
+// Project: Excel2.dpr
+// Copyright (c) 1998 by Charlie Calvert
+//
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils,
+  Classes, Graphics, Controls,
+  Forms, Dialogs, StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    ListBox1: TListBox;
+    procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    XLApplication: Variant;
+  public
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+uses
+  ComObj;
+  
+{$R *.DFM}
+
+procedure TForm1.Button1Click(Sender: TObject);
+const
+{ XlSheetType }
+  xlChart = -4109;
+  xlDialogSheet = -4116;
+  xlExcel4IntlMacroSheet = 4;
+  xlExcel4MacroSheet = 3;
+  xlWorksheet = -4167;
+
+{ XlWBATemplate }
+  xlWBATChart = -4109;
+  xlWBATExcel4IntlMacroSheet = 4;
+  xlWBATExcel4MacroSheet = 3;
+  xlWBATWorksheet = -4167;
+var
+  i, j: Integer;
+  Sheets: Variant;
+begin
+  XLApplication := CreateOleObject('Excel.Application');
+  XLApplication.Visible := True;
+  XLApplication.Workbooks.Add;
+  XLApplication.Workbooks.Add(xlWBatChart);
+  XLApplication.Workbooks.Add(xlWBatWorkSheet);
+  XLApplication.Workbooks[2].Sheets.Add(,,1,xlChart);
+  XLApplication.Workbooks[3].Sheets.Add(,,1,xlWorkSheet);
+  for i := 1 to XLApplication.Workbooks.Count do begin
+    ListBox1.Items.Add('Workbook: ' + XLApplication.Workbooks[i].Name);
+    for j := 1 to XLApplication.Workbooks[i].Sheets.Count do
+      ListBox1.Items.Add('  Sheet: ' + XLApplication.Workbooks[i].Sheets[j].Name);
+  end;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  if not VarIsEmpty(XLApplication) then begin
+    XLApplication.DisplayAlerts := False;  // Discard unsaved files....
+    XLApplication.Quit;
+  end;
+end;
+
+end.
+
+
+</PRE>
+<P>This application starts an instance, of Excel, then populates it with three 
+workbooks. One of the workbooks contains a default number of worksheets, a 
+second contains a user defined number of worksheets, and a third contains some 
+workcharts. Over the next few paragraphs I will explain how it all works.</P>
+<P>Take a moment to study the core of the Button1Click method:</P><PRE>
+  XLApplication := CreateOleObject('Excel.Application');
+  XLApplication.Visible := True;
+  XLApplication.Workbooks.Add;
+  XLApplication.Workbooks.Add(xlWBatChart);
+  XLApplication.Workbooks.Add(xlWBatWorkSheet);
+  XLApplication.Workbooks[2].Sheets.Add(,,1,xlChart);
+  XLApplication.Workbooks[3].Sheets.Add(,,1,xlWorkSheet);
+  for i := 1 to XLApplication.Workbooks.Count do begin
+    ListBox1.Items.Add('Workbook: ' + XLApplication.Workbooks[i].Name);
+    for j := 1 to XLApplication.Workbooks[i].Sheets.Count do
+      ListBox1.Items.Add('  Sheet: ' + XLApplication.Workbooks[i].Sheets[j].Name);
+  end;
+
+</PRE>
+<P><U>XLApplication</U> is a <U>variant</U> that contains an instance of 
+<U>IDispatch</U> used for accessing the Excel <U>Application</U> object. As you 
+know, there is a property of <U>Application</U> called <U>Visible</U>. If you 
+set it to <U>True</U>, then Excel will appear on your screen. Once again, this 
+is not the time or place to get into it, but COM objects support the notion of 
+properties. These properties are very different internally from Delphi 
+properties, but behave more or less the same.</P>
+<P>Workbooks is a collection object. It contains a collection of workbooks. This 
+pattern is followed over and over in Excel. The <U>Sheets</U> object contains a 
+collection of sheets. The Worksheets object contains a collection of worksheets. 
+The <U>Charts</U> object contains a collection of charts. Inside Word, the 
+<U>Paragraphs</U> object contains a collection of paragraphs. The <U>Words</U> 
+object contains a collection of words. The <U>Tables</U> object contains a 
+collection of tables. And so on. </P>
+<P>Depending on which automation server you are using, you get at member of a 
+collection through one of four possible syntaxes. Sometimes all syntaxes are 
+available to you, sometimes less:</P>MyChart := Charts[1];MyChart := 
+Charts.Item[1];MyChart := Charts(1);MyChart := Charts.Item(1); 
+<P>You need to be conscious of the difference between a collection object and a 
+normal object. For instance, to understand a <U>Worksheets</U> object, you 
+should look up both <U>Worksheets</U> and <U>Worksheet</U> in the Excel help, to 
+understand the <U>Tables</U> object you should look up both <U>Tables</U> and 
+<U>Table</U> in the Word help.</P>
+<P><U>Workbooks</U> has a method called <U>Add</U>, which you use to add a 
+workbook to a workbooks collection. COM objects support the idea of variable 
+parameter lists. This means you can simply skip passing in parameters to a 
+method if you want. In this case, if you call <U>Workbooks</U>.<U>Add</U> with 
+no parameters, then you will create a workbook with some predefined number of 
+worksheets in it. The default number is three, but you can change the number 
+from inside of Excel if you so desire. When you are working with interfaces 
+rather than variants, you won’t be able to omit parameters. I will explain in 
+the second part of this paper how to work with interfaces in situations such as 
+this one, where not passing in a parameter has a special meaning.</P>
+<P>If you want to create a new <U>Workbook</U> with exactly one <U>Worksheet</U> 
+in it, then you call <U>Add</U> and pass in the constant <U>xlWBatWorksheet.</U> 
+I declare this constant explicitly inside this program. In the next section of 
+this paper I will tell you how to get a complete list of all the Excel and Word 
+constants. </P>
+<P>If you want to create a new workbook with exactly one chart in it, then you 
+call Add and pass in the constant <U>xlWBatChart</U>.</P>
+<P>If you then want to add one worksheet to the second workbook you created, you 
+would write the following 
+code:</P>XLApplication.Workbooks[2].Sheets.Add(,,1,xlWorkSheet); 
+<P>Here is how to create a new 
+chart:</P>XLApplication.Workbooks[2].Sheets.Add(,,1,xlChart); 
+<P>In this case, the <U>Add</U> method of the <U>Sheets</U> object takes four 
+parameters:</P>
+<OL type=1>
+  <LI>Before: A variant containing the sheet before which the new sheet is 
+  added. 
+  <LI>After: A variant containing the sheet after which the new sheet is added. 
+  <LI>Count: The number of sheets to add, with the value defaulting to one. 
+  <LI>Type: One of the following constants: <U>xlWorksheet</U>, <U>xlChart</U>, 
+  <U>xlExcel4MacroSheet</U>, or <U>xlExcel4IntlMacroSheet</U>. The default value 
+  is <U>xlWorksheet</U>. </LI></OL>
+<P>The first two parameters specify the location in the workbook where you want 
+the new chart or worksheet to appear. The third parameters states how many 
+sheets you want to add, the fourth specifies the type of sheet you want to add. 
+Here is how the method is declared in the Microsoft 
+docs:</P>expression.Add(Before, After, Count, Type); 
+<P>In the above examples of using <U>Add</U>, I don’t care what order the sheets 
+are inserted, so I just omit the first two parameters by simply placing commas 
+in my code where the parameters would be listed. If wanted to state the order, I 
+would write something like this:</P>Sheets := Application.Sheets;Sheets.Add(, 
+Sheets.Item[2], 1, xlChart); 
+<P>In this case the code still leaves the <U>Before</U> parameter blank, but it 
+references the 2 sheet in the <U>After</U> parameter.</P>
+<P>The <U>for loop</U> at the bottom of the example method iterates through each 
+of the work groups, and then finds the names of each of the sheets available in 
+each workbook, and adds them to list box. In short, the code shows how to 
+retrieve the names of the members of a series of Workbooks, while simultaneously 
+showing how to iterate over all their members.</P>
+<P>Here is how to reference the number of workbooks in the application:</P>for i 
+:= 1 to XLApplication.Workbooks.Count do begin 
+<P>And here is how to count the number of sheets in a <U>Workbook</U>:</P>for j 
+:= 1 to XLApplication.Workbooks[i].Sheets.Count do 
+<P>Here is how to find the name of a particular Worksheet or Chart in 
+Workbook:</P>XLApplication.Workbooks[i].Sheets[j].Name); 
+<P>If you spend a little while contemplating the Button1Click method, then the 
+logic behind the objects in Microsoft Excel should begin to come clear to you. 
+Of course, there are additional matters to be covered, such as entering data, 
+and creating graphs. But, as you will see, most of that material is relatively 
+straightforward once you understand the way the Excel object hierarchy 
+works.</P>
+<P>One important point to make before closing this section is that it often 
+helps to assign a specific variable to one of the sub-objects in the hierarchy. 
+For instance, in the example shown above I declare a <U>variant</U> named 
+<U>Sheets</U> and set it equal to the <U>Application</U>.<U>Sheets</U> 
+object:</P>Sheets := Application.Sheets; 
+<P>To my mind it is sometimes easier to mentally parse code that is written this 
+way rather than trying to always reference a series of qualified objects such 
+as:</P>XLApplication.Workbooks[i].Sheets.Count 
+<P>Obviously, there is more overhead involved if you use the technique of 
+storing an object reference in a separate variant. However, the technology used 
+to implement OLE Automation on the Excel side is perhaps necessarily not 
+particularly efficient, so you shouldn’t balk at using techniques like this if 
+you think they will help you write clear, easy to maintain code. When trying to 
+optimize your code, remember that trips between your application and Excel are 
+very expensive. If you can limit the number of trips you need to make, then you 
+will save clock cycles. But once again, this whole process is innately slow, so 
+it’s a bit silly to start fretting over a few lost clock cycles that most users 
+will never even notice. </P>
+<P>As always, you should be particular aware of saving clock cycles when you are 
+inside a loop. A call that takes one second to execute is easy for the user to 
+bear if it occurs once. But put it in a loop, execute it 2000 times, and the 
+user will hate you. A general rule of thumb is that users will happily wait up 
+to two seconds for you to do almost anything. Longer than that and they get 
+impatient. Two seconds is several eons in computer time, so normally you don’t 
+have to fret optimization issues. The Delphi team already did all the sweating 
+for you. But when automating Excel or Word, you can get in trouble fairly 
+quickly, so you may need to think about optimization in places where you 
+wouldn’t worry about it in a normal Delphi application. Remember that they call 
+Excel automation "Visual Basic for Applications". As you will see later, these 
+Excel classes are actually real objects, so clearly this subject doesn’t have 
+much to do with Visual Basic, but the mere presence of the word Basic costs you, 
+by default, thousands of clock cycles!</P>
+<P><B><U>Finding the Constants Used in Excel </U></B></P>
+<P>You can determine all the constants used by Excel by reading its type 
+library. There are at least two simple ways to read a type library.</P>
+<OL type=1>
+  <LI>You can read the type library with a third party tool, such as the OleView 
+  application that ships with the Microsoft SDK. 
+  <LI>You can ask Delphi to read the library for you, and to translate the 
+  information stored in the library into Object Pascal. Obviously, this is the 
+  preferred technique. </LI></OL>
+<P>I have included the translations of the Excel and Word type libraries with 
+this article. However, if you want to create your own versions of these 
+libraries, then you can select Project | Import Type Library from the Delphi 
+menu, and then select the appropriate type library. A Delphi translation of the 
+type library will be created automatically. (Be sure you are using Delphi 3.01 
+or later when importing the type library, as some important fixes were made to 
+this technology between Delphi 3.0 and Delphi 3.01.)</P>
+<P>There will be a number of warnings at the top of the type library, but you 
+can ignore them. Most of these warnings have to do with name conflicts. For 
+instance, if Excel uses an Object Pascal keyword in its code, then we need to 
+make an alias for that keyword. For instance, Excel uses End in several places. 
+This is a Delphi keyword, and so we append a space on to the end of it, 
+converting the word End to End_. This puts an end to name conflicts.</P>
+<P>The files you want to import usually have either a TLB or EXE extension. When 
+working with Office 97, however, you want one with an OLB extension. The file to 
+use with Word is MSWORD8.OLB, and the one to use with Excel is EXCEL8.OLB. On my 
+system, I found these entries in the …\Microsoft Office\Office directory.</P>
+<P>The Pascal translations of the <U>interfaces</U> to all the objects used in 
+Excel or Word are found in the files created by importing EXCEL8.OLB and 
+MSWORD8.OLB. Throughout this part of the paper, I will ignore these 
+<U>interfaces</U>, and show you how to work directly with <U>variant</U> 
+objects. However, in Part II of the paper I will return to this subject, and 
+show you how to work with interfaces. At that time, I will present a discussion 
+of the relative merits of working with <U>variants</U> and 
+<U>interfaces</U>.</P>
+<P><B><U>Storing and Accessing Data in an Excel Worksheet</U></B></P>
+<P>Throughout the next few sections of this paper I will be working with an 
+example program called Excel3. The source for the main form of this program is 
+shown in Listing 3. Just take a quick look at the code for now, and then read on 
+to get an explanation of how it works.</P>
+<P>&nbsp;</P>
+<P><B>Listing 3: The source for the main form of the Excel3 program.</B></P><PRE>
+//////////////////////////////////////
+// Purpose:
+// Project: Excel3.dpr
+// Copyright (c) 1998 by Charlie Calvert
+//
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils,
+  Classes, Graphics, Controls,
+  Forms, Dialogs, StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    XLApp: Variant;
+    procedure InsertData;
+    procedure ChangeColumns;
+    procedure HandleRange;
+  public
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+uses
+  ComObj, XLConst;
+
+{$R *.DFM}
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  if not VarIsEmpty(XLApp) then begin
+    XLApp.DisplayAlerts := False;  // Discard unsaved files....
+    XLApp.Quit;
+  end;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  XLApp:= CreateOleObject('Excel.Application');
+  XLApp.Visible := True;
+  XLApp.Workbooks.Add(xlWBatWorkSheet);
+  XLApp.Workbooks[1].WorkSheets[1].Name := 'Delphi Data';
+  InsertData;
+  HandleRange;
+  ChangeColumns;
+end;
+
+procedure TForm1.InsertData;
+var
+  i: Integer;
+  Sheet: Variant;
+begin
+  Sheet := XLApp.Workbooks[1].WorkSheets['Delphi Data'];
+  for i := 1 to 10 do
+    Sheet.Cells[i, 1] := i;
+
+  Sheet.Cells[i, 1] := '=Sum(A1:A10)';
+end;
+
+procedure TForm1.HandleRange;
+var
+  Range: Variant;
+begin
+  Range := XLApp.Workbooks[1].WorkSheets['Delphi Data'].Range['C1:F25'];
+ 
+  Range.Formula := '=RAND()';
+  Range.Columns.Interior.ColorIndex := 3;
+  Range.Borders.LineStyle := xlContinuous;
+end;
+
+procedure TForm1.ChangeColumns;
+var
+  ColumnRange: Variant;
+begin
+  ColumnRange := XLApp.Workbooks[1].WorkSheets['Delphi Data'].Columns;
+  ColumnRange.Columns[1].ColumnWidth := 5;
+  ColumnRange.Columns.Item[1].Font.Bold := True;
+  ColumnRange.Columns[1].Font.Color := clBlue;
+end;
+
+end.
+</PRE>
+<P>As I implied above, it is easy to actually insert data in a spreadsheet. In 
+fact, the technique involved is very similar to what you would use putting data 
+into a <U>TStringGrid</U> control in Delphi.</P>
+<P>To get started, open up Excel and create a new spreadsheet:</P><PRE>procedure TForm1.Button1Click(Sender: TObject);
+begin
+  XLApp:= CreateOleObject('Excel.Application');
+  XLApp.Visible := True;
+  XLApp.Workbooks.Add(xlWBatWorkSheet);
+  XLApp.Workbooks[1].WorkSheets[1].Name := 'Delphi Data';
+  InsertData;
+  HandleRange;
+  ChangeColumns;
+end;
+</PRE>
+<P>As you can, see, I create a single workbook with one worksheet in it. The 
+code then names the worksheet Delphi Data. The InsertData, HandleRange and 
+ChangeColumns calls are custom Delphi routines which I will now proceed to 
+describe.</P>
+<P>To insert data into the spreadsheet, execute the following function:</P><PRE>procedure TForm1.InsertData;
+var
+  i: Integer;
+  Sheet: Variant;
+begin
+  Sheet := XLApp.Workbooks[1].WorkSheets['Delphi Data'];
+  for i := 1 to 10 do
+    Sheet.Cells[i, 1] := i;
+
+  Sheet.Cells[i, 1] := '=Sum(A1:A10)';
+end;
+</PRE>
+<P>The method starts by retrieving a pointer to the worksheet you want to 
+manipulate. As you know, this pointer is an instance of IDispatch that is stored 
+inside a variant. You don’t need to know anything about how IDispatch works in 
+order to call the methods of this object. </P>
+<P>The code proceeds to insert ten integers into the sheet. The Cells property 
+works exactly as you would expect, except Excel puts the Row first and the 
+Column second.</P>
+<P>After inserting the numbers in the worksheet, the final stage is to insert a 
+formula and add up the column of numbers. To do this, you simply insert the 
+formula much as you would if you were in Excel itself. In particular, you store 
+the formula in string, and then insert it into the appropriate cell:</P>
+<P>Sheet.Cells[i,1] := '=Sum(A1:A10)';</P>
+<H3>Workingwith Colums and Range Attributes</H3>
+<P>Sometimes you might want to perform an operation on a range of data in the 
+spreadsheet. To do this, you use the Excel Range object:</P>
+<P>Sheet.Range['C1:F25'].Formula := '=RAND()';</SPAN></P>
+<P>This code could be inserted into the bottom of the InsertData method. It 
+fills all the cells between C1 and F25 with random numbers between 0 and 1.</P>
+<P>One of the key objects in both Excel and Word is the Range object. It allows 
+you to work with a range of cells or columns at one time. In either Word or 
+Excel, you generally enter or read data by using the Range object. In short, if 
+you want to insert text into a Word document, then you will generally use the 
+Range object!</P>
+<P><B>BEGIN NOTE</B>: </P>
+<P><I>With Word, it is also possible to insert data via a considerably simpler 
+method. For instance, the following procedure will enter data at the current 
+insertion point into a currently open document in Microsoft Word:</I></P><PRE>procedure TForm1.Button1Click(Sender: TObject);
+var
+  V: Variant;
+begin
+  V := GetActiveOleObject('Word.Basic');
+  V.Insert('Sam');
+end;</PRE>
+<P><I>In this case, I have chosen not to open a new version of Word, but instead 
+call <U>GetActiveOleObject</U> to get a handle to a document in an instance of 
+Word that is already running. This kind of technology is very easy to use, and 
+is perfect for some projects. It does not, however, have the power of the 
+technology I am showing you in this paper.</I></P>
+<P><B>END NOTE</B></P>
+<P>To access a Range object in Excel, simply specify the Range with which you 
+want to work:</P>
+<P>Range := Sheet.Range['C1:F25'];</P>
+<P>In this case the code defines a range from cell C1 to cell F25. Any 
+operations performed on the returned Range object will affect all the cells in 
+that range.</P>
+<P>Here is a simple function showing how to change the values and appearance of 
+a range of cells:</P><PRE>procedure TForm1.HandleRange;
+var
+  Range: Variant;
+begin
+  Range := XLApp.Workbooks[1].WorkSheets['Delphi Data'].Range['C1:F25'];
+  Range.Formula := '=RAND()';
+  Range.Columns.Interior.ColorIndex := 3;
+  Range.Borders.LineStyle := xlContinuous;
+end;
+</PRE>
+<P>The first line of code returns a pointer to the range you want to manipulate. 
+The second line fills all the values in the range C1:F25 with random numbers 
+between 0 and 1, as explained earlier.</P>
+<P>The third line of code changes the color of the entire block of cells to red. 
+You can use the Excel online help to see the values in the ColorIndex, but the 
+first few default values are as follows: black, white, red, green, blue, yellow, 
+purple, cyan. Red is the third item in the list, so setting the ColorIndex to 3 
+makes the selected range of cells Red. </P>
+<P>At the same time that you change the color, you also loose your borders. This 
+is a peculiarity of Excel, and it can be worked around by resetting the 
+LineStyle of the selected cells as shown in the last line of code in the 
+procedure. Once again, when you are working with constants like this, you can 
+find them in the XLCONST.pas or EXCELTLB.pas files included with the example 
+programs accompanying this article, or can retrieve them from the type library 
+as explained earlier.</P>
+<P>For those who are interested, here is a line of code that changes the 
+background of a range:</P><PRE>Range.Columns.Interior.Pattern := xlPatternCrissCross;</PRE>
+<P>The following function changes the width and font of a column:</P><PRE>procedure TForm1.ChangeColumns;
+var
+  ColumnRange: Variant;
+begin
+  ColumnRange := XLApp.Workbooks[1].WorkSheets['Delphi Data'].Columns;
+  ColumnRange.Columns[1].ColumnWidth := 5;
+  ColumnRange.Columns[1].Font.Bold := True;
+  ColumnRange.Columns[1].Font.Color := clBlue;
+end;
+</PRE>
+<P>As you can see, when you want to work with the columns in a worksheet, you 
+can access them from a Range object. In particular, the Range object contains a 
+collection of columns that you can access using array notation. </P>
+<P>To change the width of a column, use the ColumnWidth property, and to change 
+the Font, use the Font property. Going into much more detail would be pointless, 
+as this code is easy to write.</P>
+<H3>Creating a Chart</H3>
+<P>It is just as easy to create and work with a Chart as it is to do everything 
+else in Excel automation. In the example shown in this section, refer to the 
+online program called Excel4.dpr. The listing for this program is shown in 
+Listing 4. I include the listing here so that you can take a quick glance 
+through it, and then refer back to it during the discussion of its inner 
+workings that follows this listing. In other words, I don’t expect you to 
+understand the program completely at a single glance, but will instead spend the 
+remainder of this section discussing it in some depth.</P>
+<P>&nbsp;</P>
+<P><B>Listing 4: The Excel4 programs shows how to work with charts.</B></P><PRE>
+
+unit Main;
+{
+  Main.pas
+  Copyright (c) 1997 by Charlie Calvert
+  Creating data and a chart in Excel and copying both to Word.
+}
+
+interface
+
+uses
+  Windows, Messages, SysUtils,
+  Classes, Graphics, Controls,
+  Forms, Dialogs, StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    SendMailBtn: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure SendMailBtnClick(Sender: TObject);
+  private
+    XLApp: Variant;
+    WordApp: Variant;
+  public
+    procedure HandleData;
+    procedure ChartData;
+    procedure CopyData;
+    procedure CopyChartToWord;
+    procedure CopyCellsToWord;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+uses
+  ComObj, XLConst, WordConst,
+  ActiveX;
+
+{$R *.DFM}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  XLApp := CreateOleObject('Excel.Application');
+  XLApp.Visible := True;
+  XLApp.Workbooks.Add[XLWBatWorksheet];
+  XLApp.Workbooks[1].Worksheets[1].Name := 'Delphi Data';
+  HandleData;
+  ChartData;
+  CopyData;
+  SendMailBtn.Enabled := True;
+end;
+
+procedure TForm1.HandleData;
+var
+  Sheet: Variant;
+  i: Integer;
+begin
+  Sheet := XLApp.Workbooks[1].Worksheets['Delphi Data'];
+  for i := 1 to 10 do
+    Sheet.Cells[i, 1] := i;
+end;
+
+procedure TForm1.ChartData;
+var
+  ARange: Variant;
+  Sheets: Variant;
+begin
+  XLApp.Workbooks[1].Sheets.Add(,,1,xlChart);
+  Sheets := XLApp.Sheets;
+  ARange := Sheets.Item['Delphi Data'].Range['A1:A10'];
+  Sheets.Item['Chart1'].SeriesCollection.Item[1].Values := ARange;
+  Sheets.Item['Chart1'].ChartType := xl3DPie;
+  Sheets.Item['Chart1'].SeriesCollection.Item[1].HasDataLabels := True;
+
+  XLApp.Workbooks[1].Sheets.Add(,,1,xlChart);
+  Sheets.Item['Chart2'].SeriesCollection.Item[1].Values := ARange;
+  Sheets.Item['Chart2'].SeriesCollection.Add(ARange);
+  Sheets.Item['Chart2'].SeriesCollection.NewSeries;
+  Sheets.Item['Chart2'].SeriesCollection.Item[3].Values :=
+    VarArrayOf([1,2,3,4,5, 6,7,8,9,10]);
+  Sheets.Item['Chart2'].ChartType := xl3DColumn;
+end;
+
+procedure TForm1.CopyData;
+var
+  Sheets: Variant;
+begin
+  SetFocus;
+  
+  Sheets := XLApp.Sheets;
+
+  Sheets.Item['Delphi Data'].Activate;
+  Sheets.Item['Delphi Data'].Range['A1:A10'].Select;
+  Sheets.Item['Delphi Data'].UsedRange.Copy;
+
+  CopyCellsToWord;
+
+  Sheets.Item['Chart1'].Select;
+  XLApp.Selection.Copy;
+
+  CopyChartToWord;
+end;
+
+procedure TForm1.CopyChartToWord;
+var
+  Range: Variant;
+  i, NumPars: Integer;
+begin
+  NumPars := WordApp.Documents.Item(1).Paragraphs.Count;
+
+  Range := WordApp.Documents.Item(1).Range(
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.Start,
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.End);
+  Range.Text := 'This is graph: ';
+
+  for i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add;
+
+  Range := WordApp.Documents.Item(1).Range(
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 1).Range.Start,
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 1).Range.End);
+
+  Range.Paste; //Special(,,,,wdPasteOleObject);  
+end;
+
+procedure TForm1.CopyCellsToWord;
+var
+  Range: Variant;
+  i: Integer;
+begin
+  WordApp := CreateOleObject('Word.Application');
+  WordApp.Visible := True;
+  WordApp.Documents.Add;
+  Range := WordApp.Documents.Item(1).Range;
+  Range.Text := 'This is a column from a spreadsheet: ';
+  for i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add;
+  Range := WordApp.Documents.Item(1).Range(
+    WordApp.Documents.Item(1).Paragraphs.Item(3).Range.Start);
+  Range.Paste;
+  for i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  if not VarIsEmpty(XLApp) then begin
+    XLApp.DisplayAlerts := False;  // Discard unsaved files....
+    XLApp.Quit;
+  end;
+
+  if not VarIsEmpty(WordApp)then begin
+    WordApp.Documents.Item(1).Close(wdDoNotSaveChanges);
+    WordApp.Quit;
+  end;
+end;
+
+procedure TForm1.SendMailBtnClick(Sender: TObject);
+begin
+  WordApp.Documents.Item(1).SaveAs('c:\foo.doc');
+  WordApp.Options.SendMailAttach := True;
+  WordApp.Documents.Item(1).SendMail;
+end;
+
+end.
+</PRE>
+<P>This code pops up a copy of Excel, inserts some data into it, creates two 
+graphs of the data, then pops up a copy of Word, copies the cells from the 
+worksheet to a new Word document, and then copies one of the charts into the 
+same document. When you are through, you have a word document containing some 
+spreadsheet cells with Delphi data in them, and below these cells, a graph. You 
+may not see the graph at first when looking at your copy of Word. To find the 
+graph, scroll the document down a bit. By default, there is a fairly large 
+margin at the top of a graph, so you may need to scroll down further than you 
+think. After creating the Word document, the user has a chance to mail it via 
+Microsoft mail.</P>
+<P>The Button1Click method drives the entire application:</P><PRE>
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  XLApp := CreateOleObject('Excel.Application');
+  XLApp.Visible := True;
+  XLApp.Workbooks.Add[XLWBatWorksheet];
+  XLApp.Workbooks[1].Worksheets[1].Name := 'Delphi Data';
+  HandleData;
+  ChartData;
+  CopyData;
+  SendMailBtn.Enabled := True;
+end;
+</PRE>
+<P>Its starts by creating an Excel Application object, then sets the Visible 
+property of the object to true, and adds a new workbook and stuffs a single 
+worksheet into it. The Delphi application then calls my custom HandleData method 
+to insert data into the spreadsheet:</P><PRE>procedure TForm1.HandleData;
+var
+  Sheet: Variant;
+  i: Integer;
+begin
+  Sheet := XLApp.Workbooks[1].Worksheets['Delphi Data'];
+  for i := 1 to 10 do
+    Sheet.Cells[i, 1] := i;
+end;
+</PRE>
+<P>This method was explained earlier in this article, so I won’t cover it 
+again.</P>
+<P>Now that you have a worksheet, and some data, then next step is to create a 
+graph. The following procedure from the Excel4 program should get you started 
+working with charts:</P><PRE>procedure TForm1.ChartData;
+var
+  ARange: Variant;
+  Sheets: Variant;
+begin
+  XLApp.Workbooks[1].Sheets.Add(,,1,xlChart);
+  Sheets := XLApp.Sheets;
+  ARange := Sheets.Item['Delphi Data'].Range['A1:A10'];
+  Sheets.Item['Chart1'].SeriesCollection.Item[1].Values := ARange;
+  Sheets.Item['Chart1'].ChartType := xl3DPie;
+  Sheets.Item['Chart1'].SeriesCollection.Item[1].HasDataLabels := True;
+
+  XLApp.Workbooks[1].Sheets.Add(,,1,xlChart);
+  Sheets.Item['Chart2'].SeriesCollection.Item[1].Values := ARange;
+  Sheets.Item['Chart2'].SeriesCollection.Add(ARange);
+  Sheets.Item['Chart2'].SeriesCollection.NewSeries;
+  Sheets.Item['Chart2'].SeriesCollection.Item[3].Values :=
+    VarArrayOf([1,2,3,4,5, 6,7,8,9,10]);
+  Sheets.Item['Chart2'].ChartType := xl3DColumn;
+end;
+</PRE>
+<P>This function creates two different charts. I’ve arranged things this way so 
+you can get a look at some of the different techniques needed to create 
+charts.</P>
+<P>The code starts by adding a single chart to a Sheets object in a 
+workbook:</P><PRE>XLApp.Workbooks[1].Sheets.Add(,,1,xlChart);</PRE>
+<P>As you can see, I just ignore the first two parameters, then explicitly state 
+that I want to insert 1 sheet, and define its type as xlChart. The <U>Add</U> 
+method was described in more depth earlier in this article.</P>
+<P>A lot of the trick to working with Excel is to find the right object to work 
+with. In my opinion, the <U>Sheets</U> object provides a simple and convenient 
+way to create a chart, but it is not the only way of doing so. Remember that the 
+<U>Sheets</U> object contains both the <U>Worksheets</U> and <U>Charts</U> 
+objects inside a <U>Workbook</U>, so you can use it to add either worksheets or 
+charts.</P>
+<P>You should further understand that I am talking about adding <U>Charts</U> to 
+a <U>Sheets</U> object, which is different from adding <U>ChartObjects</U> to a 
+worksheet. In other words, you can insert a graph into a worksheet, but that is 
+a different operation from the one I show here. The key to embedding a chart 
+into a work sheet is the Excel ChartObjects collection, which is not discussed 
+further in this article.</P>
+<P>Once the chart has been created, the code then finds a range of data in the 
+sheet to work on. In this particular example, the range is the same as produced 
+back in the Excel 3 application, when I inserted 10 numbers into the A column, 
+and then supplied a formula to add them up. In particular, note that I create a 
+range object, then set the SeriesCollection of a Chart object to this range:</P><PRE>ARange := Sheets.Item['Delphi Data'].Range['A1:A10'];
+Sheets.Item['Chart1'].SeriesCollection.Item[1].Values := ARange;</PRE>
+<P>That is all you need to do to graph a range of data. As I will explain in a 
+moment, you may want to manipulate the chart further, but just doing what I have 
+done here is enough to start charting data.</P>
+<P>It is probably worthwhile stepping back and looking at the SeriesCollection 
+object and see what it represents. To get started, you needed to understand that 
+a Series is simply a range of data that you want to graph. A SeriesCollection is 
+a collection of ranges of data, that is, it is a collection of Series. For 
+instance, if you had the values 1, 2, 3 in three cells in a spread sheet, then 
+that would represent a range of three numbers which could be placed in a 
+<U>Series</U>. By default, the graph of that series might look something like 
+this, where each dash represents one unit in the Series 1, 2, 3:</P>
+<P>-</P>
+<P>--</P>
+<P>---</P>
+<P>If you had several Series together in one place, then that would be a 
+SeriesCollection.</P>
+<P>To see a SeriesCollection on the Excel side, load an Excel chart, right click 
+on it, select the Source Data item from the menu, and turn to the Series page, 
+as shown in Figure 1:</P>
+<P>&nbsp;</P>
+<P><B>Figure 1: Showing a series inside of Excel.</B></P>
+<P>This is the series created for the first graph made by the Excel4 program. As 
+you can see, the series is described with a single cryptic line:</P>
+<P>='DelphiData'!$A$1:$A$10</SPAN></P>
+<P>If you think about it for a second, you can see how this line corresponds to 
+the code you wrote in Delphi. To help you see the relationship, I will write a 
+single line of pseudo-code designed to highlight the relationship:</P><PRE>SeriesCollection.Item[1].Values := Sheets.Item[‘Delphi Data’].Range[A1:A10];</PRE>
+<P>This line will not compile, but it contains the essence of what happens in 
+the two lines of Delphi code which creates the <U>Series</U> shown from the 
+Series<U>C</U>ollection. It is similar to the data seen on the Excel side.</P>
+<P>When you create a new chart, there is one <U>Series</U> made for you 
+automatically. By default, it charts whatever value is in cell <U>A1</U> of a 
+particular <U>Worksheet</U>. In this case, I have changed that series to point 
+to a new range of data. In other words, I have changed the "Values" associated 
+with the <U>Series</U>. As you will see in one moment, you can add additional 
+series if you so desire. </P>
+<P>After creating the chart, the code defines it further by stating its 
+type:</P>Sheets.Item['Chart1'].ChartType := xl3DPie; 
+<P>And then goes on to specify that the chart has a series of data 
+labels:</P>Sheets.Item['Chart1'].SeriesCollection.Item[1].HasDataLabels := True; 
+
+<P>Its time now to look at the second chart created by the ChartData 
+method:</P>XLApp.Workbooks[1].Sheets.Add(,,1,xlChart);Sheets.Item['Chart2'].SeriesCollection.Item[1].Values 
+:= 
+ARange;Sheets.Item['Chart2'].SeriesCollection.Add(ARange);Sheets.Item['Chart2'].SeriesCollection.NewSeries;Sheets.Item['Chart2'].SeriesCollection.Item[3].Values 
+:=&nbsp;&nbsp;VarArrayOf([1,2,3,4,5,6,7,8,9,10]); 
+<P>This chart graphs a SeriesCollection that contains not one, but three 
+<U>Series</U>. The first and second <U>Series</U> are identical to the 
+<U>Series</U> graphed by the first chart, but the third <U>Series</U> is 
+slightly different, in that its values come not from an Excel worksheet, but 
+from a range of data directly specified inside Delphi.</P>
+<P>Take a moment to consider what is happening here. The first set of data 
+graphed is specified exactly as in the previous example:</P>
+<P 
+style="MARGIN: 0in 0in 0pt; tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-fareast-font-family: 'Courier New'">Sheets.Item['Chart2'].SeriesCollection.Item[1].Values 
+:= ARange;</SPAN></P>
+<P>Adding a new range specifies the next <U>Series</U>:</P>
+<P 
+style="MARGIN: 0in 0in 0pt; tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-fareast-font-family: 'Courier New'">Sheets.Item['Chart2'].SeriesCollection.Add(ARange);</SPAN></P>
+<P>Finally, the code creates a new <U>Series</U> with no particular data:</P>
+<P 
+style="MARGIN: 0in 0in 0pt; tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-fareast-font-family: 'Courier New'">Sheets.Item['Chart2'].SeriesCollection.NewSeries;</SPAN></P>
+<P>The program than creates a variant array containing the values you want to 
+chart in this third 
+<U>Series</U>:</P>Sheets.Item['Chart2'].SeriesCollection.Item[3].Values 
+:=&nbsp;&nbsp;VarArrayOf([1,2,3,4,5,6,7,8,9,10]); 
+<P>This is not the time nor place to discuss variant arrays, but the subject is 
+treated in Chapter 25 of the Delphi User’s Guide. The series created by this 
+code is shown on the Excel side in Figure 2.</P>
+<P>&nbsp;</P>
+<P><B>Figure 2: A variant array created in Delphi as it is depicted inside 
+Excel.</B></P>
+<P>In this case, I need not change the type of graph, since the default column 
+chart does the job adequately. I could, however, add the following line of code 
+to create a new effect:</P>
+<P 
+style="MARGIN: 0in 0in 0pt; tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-fareast-font-family: 'Courier New'">Sheets.Item['Chart2'].ChartType 
+:= xl3DColumn;</SPAN></P>
+<P>You are at last ready to copy the worksheet and two charts that you have 
+created from Excel into Word. This is a relatively complex operation, so I will 
+start a new section in this article to discuss it.</P>
+<H3>Coping Data from Excel to Word</H3>
+<P>The process of copying data from Excel to Word has two parts. The first part 
+involves copying the data to the clipboard, and the second part involves pasting 
+the data into the Word document. In other words, you have to have both Excel and 
+Word open to make this work. Furthermore, the tricky part is not so much copying 
+the data from Excel, but inserting it correctly into Word.</P>
+<P>Below this paragraph is the procedure which copies the data from Excel to the 
+clipboard. Note that I have created two methods called CopyCellsToWord and 
+CopyChartToWord. These methods handle the Word side of the process, allowing me 
+to isolate the Excel code in one method:</P><PRE>procedure TForm1.CopyData;
+var
+  Sheets: Variant;
+begin
+  SetFocus;
+  Sheets := XLApp.Sheets;
+  Sheets.Item['Delphi Data'].Activate;
+  Sheets.Item['Delphi Data'].Range['A1:A10'].Select;
+  Sheets.Item['Delphi Data'].UsedRange.Copy;
+  CopyCellsToWord;
+  Sheets.Item['Chart1'].Select;
+  XLApp.Selection.Copy;
+  CopyChartToWord;
+end;
+</PRE>
+<P>To copy data from a range in a worksheet to the clipboard I first retrieve a 
+Sheets object, then do the following:</P><PRE>Sheets.Item['Delphi Data'].Activate;
+Sheets.Item['Delphi Data'].Range['A1:A10'].Select;
+Sheets.Item['Delphi Data'].UsedRange.Copy;</PRE>
+<P>I first Activate the worksheet, then select a range of data in it, and 
+finally copy the data to memory. In this process, I essentially mirror the 
+actions I would take were I doing this manually. In other words, I first "click" 
+on the work sheet I want to use, that is, I activate it. I then select a range 
+of data from it, and finally I "press Ctrl-C" to copy it to the clipboard. Of 
+course, I’m not really doing these things, but I’m executing in code the steps 
+necessary to duplicate these actions as follows:</P>
+<TABLE 
+style="BORDER-RIGHT: #666699 0.75pt outset; BORDER-TOP: #666699 0.75pt outset; BORDER-LEFT: #666699 0.75pt outset; WIDTH: 442.5pt; BORDER-BOTTOM: #666699 0.75pt outset; mso-cellspacing: .7pt; mso-padding-alt: 5.25pt 5.25pt 5.25pt 5.25pt" 
+cellSpacing=1 cellPadding=0 width=590 border=1>
+  <TBODY>
+  <TR>
+    <TD 
+    style="BORDER-RIGHT: #666699 0.75pt inset; PADDING-RIGHT: 5.25pt; BORDER-TOP: #666699 0.75pt inset; PADDING-LEFT: 5.25pt; PADDING-BOTTOM: 5.25pt; BORDER-LEFT: #666699 0.75pt inset; WIDTH: 26%; PADDING-TOP: 5.25pt; BORDER-BOTTOM: #666699 0.75pt inset" 
+    vAlign=top width="26%">
+      <P>Call Activate</P></TD>
+    <TD 
+    style="BORDER-RIGHT: #666699 0.75pt inset; PADDING-RIGHT: 5.25pt; BORDER-TOP: #666699 0.75pt inset; PADDING-LEFT: 5.25pt; PADDING-BOTTOM: 5.25pt; BORDER-LEFT: #666699 0.75pt inset; WIDTH: 74%; PADDING-TOP: 5.25pt; BORDER-BOTTOM: #666699 0.75pt inset" 
+    vAlign=top width="74%">
+      <P>Click on page with mouse</P></TD></TR>
+  <TR>
+    <TD 
+    style="BORDER-RIGHT: #666699 0.75pt inset; PADDING-RIGHT: 5.25pt; BORDER-TOP: #666699 0.75pt inset; PADDING-LEFT: 5.25pt; PADDING-BOTTOM: 5.25pt; BORDER-LEFT: #666699 0.75pt inset; WIDTH: 26%; PADDING-TOP: 5.25pt; BORDER-BOTTOM: #666699 0.75pt inset" 
+    vAlign=top width="26%">
+      <P>Call Select</P></TD>
+    <TD 
+    style="BORDER-RIGHT: #666699 0.75pt inset; PADDING-RIGHT: 5.25pt; BORDER-TOP: #666699 0.75pt inset; PADDING-LEFT: 5.25pt; PADDING-BOTTOM: 5.25pt; BORDER-LEFT: #666699 0.75pt inset; WIDTH: 74%; PADDING-TOP: 5.25pt; BORDER-BOTTOM: #666699 0.75pt inset" 
+    vAlign=top width="74%">
+      <P>Select data with the mouse</P></TD></TR>
+  <TR>
+    <TD 
+    style="BORDER-RIGHT: #666699 0.75pt inset; PADDING-RIGHT: 5.25pt; BORDER-TOP: #666699 0.75pt inset; PADDING-LEFT: 5.25pt; PADDING-BOTTOM: 5.25pt; BORDER-LEFT: #666699 0.75pt inset; WIDTH: 26%; PADDING-TOP: 5.25pt; BORDER-BOTTOM: #666699 0.75pt inset" 
+    vAlign=top width="26%">
+      <P>Call Copy</P></TD>
+    <TD 
+    style="BORDER-RIGHT: #666699 0.75pt inset; PADDING-RIGHT: 5.25pt; BORDER-TOP: #666699 0.75pt inset; PADDING-LEFT: 5.25pt; PADDING-BOTTOM: 5.25pt; BORDER-LEFT: #666699 0.75pt inset; WIDTH: 74%; PADDING-TOP: 5.25pt; BORDER-BOTTOM: #666699 0.75pt inset" 
+    vAlign=top width="74%">
+      <P>Press Crtl-C or pull down the Edit menu and choose 
+  Copy</P></TD></TR></TBODY></TABLE>
+<P>After the program copies a range of cells to memory, the next step is to copy 
+the cells to Word. In this explanation, however, I will temporarily pass over 
+the act of copying the data to word, and instead show you how to copy the Chart 
+to memory. Note however, that you obviously must do these things one at a time, 
+since the clipboard can only hold one object in memory at a time. In short, you 
+can’t copy both the worksheet and the chart to two separate places in the 
+clipboard, then copy them both to Word in one motion. The problem, of course, is 
+that the clipboard has only one area available in memory. </P>
+<P>Here is how to copy a chart to the clipboard:</P>
+<P 
+style="MARGIN: 0in 0in 0pt; tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-fareast-font-family: 'Courier New'"><SPAN 
+style="mso-spacerun: yes">Sheets.Item['Chart1'].Select;</SPAN></P>
+<P 
+style="MARGIN: 0in 0in 0pt; tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: 'Courier New'; mso-fareast-font-family: 'Courier New'"><SPAN 
+style="mso-spacerun: yes">XLApp.Selection.Copy;</SPAN></P>
+<P>This code first selects Chart1, then copies it to the clipboard. Again, I am 
+mirroring the actions I would take where I doing this all manually. That is, I 
+first select the object, then "press Ctrl-C" to copy it. Once again, I don’t 
+explicitly press Crtl-C, but instead perform the steps in code that duplicate 
+this action.</P>
+<P><B><U>Automation Inside Word</U></B></P>
+<P>In the next few paragraphs I will be discussing the following procedure, 
+which gets you up and running with Automation in Word:</P><PRE>procedure TForm1.CopyCellsToWord;
+var
+  Range: Variant;
+  i: Integer;
+
+begin
+  WordApp := CreateOleObject('Word.Application');
+  WordApp.Visible := True;
+  WordApp.Documents.Add;
+  Range := WordApp.Documents.Item(1).Range;
+  Range.Text := 'This is a column from a spreadsheet: ';
+  
+  for i := 1 to 3 do 
+    WordApp.Documents.Item(1).Paragraphs.Add;
+
+  Range := WordApp.Documents.Item(1).Range(WordApp.Documents.Item(1).     
+  Paragraphs.Item(3).Range.Start);
+  Range.Paste;
+
+  for i := 1 to 3 do 
+    WordApp.Documents.Item(1).Paragraphs.Add;
+
+end;
+</PRE>
+<P>To get started in Word, you just follow more or less the same steps you would 
+in Excel:</P>WordApp := CreateOleObject('Word.Application');WordApp.Visible := 
+True;WordApp.Documents.Add; 
+<P>This code creates a Word <U>Application</U> object, sets the <U>Visible</U> 
+property of the object to <U>True</U>, and adds a single document to it. </P>
+<P>To add text to the document, you can execute the following code:</P>Range := 
+WordApp.Documents.Item(1).Range;Range.Text := 'This is a column from a 
+spreadsheet: '; 
+<P>In this case the code retrieves a Range object representing the entire 
+document, which of course starts out completely empty. To start to place text in 
+the document, you can use the Text property of the Range.</P>
+<P>You could simply paste the data from Excel directly in your document. 
+However, you want to be able to have some control over the location where the 
+cells are placed. To do this, you need some white space in the document, that 
+is, you need a series of carriage returns through which you can iterate:</P>for 
+i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add; 
+<P>You can now use the Goto method of the Range or Document object to move back 
+and forth across this range of paragraphs. Or, if you want, you can select a new 
+Range, and then Paste your Excel data into that Range. In my experience, this 
+second method is a simpler method of moving through a document. Here is the code 
+for selecting a Range covering the third paragraph of a document:</P>Range := 
+&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>WordApp.Documents.Item(1).Range(WordApp.Documents.Item(1).&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Paragraphs.Item(3).Range.Start); 
+
+<P>Please note that this is one single line of code. I wrap it here because I 
+must in order to fit it in a word processing or HTML document. In your code, 
+however, you want to type it in on one single line. This code states that I want 
+to define a Range on the third paragraph of the document. I explicitly state 
+that the Range starts at the beginning of the paragraph, but I do not define the 
+end of the Range. In a moment I will show you how to also specify the end of a 
+Range.</P>
+<P>I can now Paste in the Excel code with a single easy to write line:</P>
+<P style="MARGIN: 0in 0in 0pt; tab-stops: 45.8pt 91.6pt 137.4pt 
+183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 
+595.4pt 641.2pt 687.0pt 732.8pt"><SPAN 
+style="FONT-SIZE: 10pt; FONT-FAMILY: 'Courier 
+New'; mso-fareast-font-family: 'Courier New'">Range.Paste;</SPAN></P>
+<P>After pasting in this Range of Cells, I find that several new Paragraphs have 
+been added to my document. There is no specific way for me to be sure how many, 
+since the number of cells I paste in may vary with different versions of my 
+program. So when get ready to paste in the Chart from Excel, I begin by asking 
+how many paragraphs are currently in the document:</P><PRE>procedure TForm1.CopyChartToWord;
+var
+  Range: Variant;
+  i, NumPars: Integer;
+begin
+  NumPars := WordApp.Documents.Item(1).Paragraphs.Count;
+  Range := WordApp.Documents.Item(1).Range(
+  WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.Start,
+  WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.End);
+  Range.Text := 'This is graph: ';
+  
+  for i := 1 to 3 do WordApp.Documents.Item(1).Paragraphs.Add;
+  Range := WordApp.Documents.Item(1).Range(
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 2).Range.Start,
+    WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 2).Range.End);
+
+  Range.PasteSpecial(,,,,wdPasteOleObject);
+end;</PRE>
+<P>I return the paragraph count in the variable <U>NumPars</U>. I then create a 
+domain that ranges over the last paragraph of the document. In other words, I 
+count the paragraphs in the document, and then say I want to establish a Range 
+on the last paragraph. Once again, this is one way to position yourself in the 
+document: </P><PRE>Range := WordApp.Documents.Item(1).Range(
+  WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.Start,
+  WordApp.Documents.Item(1).Paragraphs.Item(NumPars).Range.End);</PRE>
+<P>Once I’ve located myself in the proper position, the next step is to enter a 
+single descriptive line of text, followed by a few additional paragraphs: </P><PRE>  Range.Text := 'This is graph: ';
+  for i := 1 to 3 do
+    WordApp.Documents.Item(1).Paragraphs.Add;</PRE>
+<P>I then once again position myself on the last paragraph in the document: </P><PRE>Range := WordApp.Documents.Item(1).Range(
+  WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 1).Range.Start,
+  WordApp.Documents.Item(1).Paragraphs.Item(NumPars + 1).Range.End);</PRE>
+<P>Notice that when creating this Range I explicitly state that it "ranges" from 
+the beginning of the paragraph to the end. In an earlier example, I filled in 
+the first part of the range, but left the second part open. In this case, either 
+method would work, but I show you both so you can see various examples of how 
+the syntax works. </P>
+<P>In that same spirit, I use a slightly different technique when pasting in the 
+Chart data: </P><PRE>Range.PasteSpecial(,,,,wdPasteOleObject);</PRE>
+<P>In this case I call the PasteSpecial method, and ask to insert an OLE object. 
+This insures that you can edit the document in place by double clicking on it. 
+The PasteSpecial method takes a wide range of parameters, but I won’t discuss 
+them here, since that subject is fairly tangential to this paper. For more 
+details, look up PasteSpecial in the Word Visual Basic help. Remember that this 
+help file is not installed by default, so you may need to run the Word install 
+and explicitly ask for the file, or else copy it off the CD manually. 
+<H3>Mailing a Document </H3>
+<P>The Documents object also has Save, SaveAs, and Open methods you can use when 
+opening or saving a document. In fact, there are many methods and properties 
+associated with most of the objects discussed in this article. The only way to 
+get to know them all is to open up the Word or Excel help and start browsing 
+through them. This article is meant to give you a conceptual overview of how to 
+use Word and Excel automation objects. It is not a complete examination of the 
+subject.</P>
+<P>Here is how to save the current Word document: </P><PRE>WordApp.Documents.Item(1).SaveAs('c:\foo.doc');</PRE>
+<P>The following code allows you to send a mail message: </P><PRE>procedure TForm1.MailDocument;
+begin
+  WordApp.Documents.Item(1).SaveAs('c:\foo.doc');
+  WordApp.Options.SendMailAttach := True;
+  WordApp.Documents.Item(1).SendMail;
+end;</PRE>
+<P>If you have Microsoft Mail set up on your computer, you can send a document 
+to another user directly from Excel. The code for doing this is shown above. 
+This code will automatically pop up the mail services, allowing you to pick a 
+user and send the document. The document you created will automatically be 
+attached to your message. If you don’t have mail set up on your machine, then 
+this code obviously won’t work. </P>
+<H3>Summary of Part I</H3>
+<P>That is all I’m going to say on the basic steps involved with automating 
+Excel and Word from Delphi. This is obviously a large subject, and much more 
+could be said about it. However, the information you have seen here should open 
+up the topic sufficiently to allow you to perform most tasks.</P>
+<P>By now it should be obvious to you that the automation objects in Excel and 
+Word are extremely powerful. Were you creating an actual word processor, you 
+couldn’t ask for much more in terms of functionality, but of course you would 
+look for a little better performance! </P>
+<P>The next installment of this paper, found in Part II, will cover interfaces 
+and dispinterfaces. These are extremely important topics, and indeed your 
+education in automating Excel or Word is definitely not complete without an 
+understanding of these important topics. In fact, you will find that in Part II, 
+I rewrite all the code shown you so far, giving you a second, somewhat more 
+complicated, but considerably more powerful set of tools. So far I’ve shown you 
+code that duplicates more or less what you can do in Visual Basic. The second 
+part of the article shows how you can leverage the power of Delphi to take full 
+advantage of automation.</P></BODY></HTML>
